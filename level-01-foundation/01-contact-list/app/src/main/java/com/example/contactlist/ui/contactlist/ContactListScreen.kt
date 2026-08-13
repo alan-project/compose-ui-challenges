@@ -67,7 +67,7 @@ fun ContactListScreen(
       CenterAlignedTopAppBar(
         title = {
           Text(
-            text = "연락처",
+            text = "Contacts",
             fontWeight = FontWeight.Bold,
           )
         },
@@ -138,10 +138,10 @@ private fun ContactRow(
       )
     }
 
-    val favoriteAction = if (contact.isFavorite) "즐겨찾기 해제" else "즐겨찾기 추가"
+    val favoriteAction = if (contact.isFavorite) "Remove from favorites" else "Add to favorites"
     IconButton(
       onClick = onFavoriteClick,
-      modifier = Modifier.semantics { contentDescription = "${contact.name} $favoriteAction" },
+      modifier = Modifier.semantics { contentDescription = "$favoriteAction: ${contact.name}" },
     ) {
       Text(
         text = if (contact.isFavorite) "★" else "☆",
