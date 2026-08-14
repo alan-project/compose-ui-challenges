@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.contactlist.data.repository.InMemoryContactRepository
 import com.example.contactlist.theme.ContactListTheme
+import com.example.contactlist.ui.contactlist.ContactListRoute
+import com.example.contactlist.ui.contactlist.ContactListViewModel
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +24,14 @@ class MainActivity : ComponentActivity() {
         Surface(
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colorScheme.background,
-        ) {}
+        ) {
+          val viewModel =
+            viewModel<ContactListViewModel> {
+              ContactListViewModel(InMemoryContactRepository())
+            }
+
+          ContactListRoute(viewModel = viewModel)
+        }
       }
     }
   }
