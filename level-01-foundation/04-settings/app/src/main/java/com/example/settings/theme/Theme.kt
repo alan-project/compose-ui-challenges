@@ -1,50 +1,75 @@
 package com.example.settings.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80)
 
 private val LightColorScheme =
   lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
+    primary = Forest,
+    onPrimary = OnForest,
+    primaryContainer = ForestContainer,
+    onPrimaryContainer = OnForestContainer,
+    secondary = EarthTeal,
+    onSecondary = OnEarthTeal,
+    secondaryContainer = SageContainer,
+    onSecondaryContainer = OnSageContainer,
+    tertiary = Amber,
+    onTertiary = OnAmber,
+    tertiaryContainer = WarmSand,
+    onTertiaryContainer = OnWarmSand,
+    background = SandCanvas,
+    onBackground = EarthInk,
+    surface = CreamSurface,
+    onSurface = EarthInk,
+    surfaceVariant = EarthSurfaceVariant,
+    onSurfaceVariant = EarthMutedInk,
+    outline = EarthOutline,
+    outlineVariant = EarthOutlineVariant,
+    error = SettingsError,
+    onError = CreamSurface,
+    errorContainer = SettingsErrorContainer,
+    onErrorContainer = SettingsOnErrorContainer,
+  )
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val DarkColorScheme =
+  darkColorScheme(
+    primary = ForestLight,
+    onPrimary = OnForestLight,
+    primaryContainer = DeepForest,
+    onPrimaryContainer = OnDeepForest,
+    secondary = TealLight,
+    onSecondary = OnTealLight,
+    secondaryContainer = DeepTeal,
+    onSecondaryContainer = OnDeepTeal,
+    tertiary = AmberLight,
+    onTertiary = OnAmberLight,
+    tertiaryContainer = DeepAmber,
+    onTertiaryContainer = OnDeepAmber,
+    background = EarthNight,
+    onBackground = EarthNightText,
+    surface = EarthNightSurface,
+    onSurface = EarthNightText,
+    surfaceVariant = EarthNightElevated,
+    onSurfaceVariant = EarthNightMutedText,
+    outline = EarthNightOutline,
+    outlineVariant = EarthNightOutlineVariant,
+    error = SettingsDarkError,
+    onError = SettingsDarkOnError,
+    errorContainer = SettingsDarkErrorContainer,
+    onErrorContainer = SettingsDarkOnErrorContainer,
   )
 
 @Composable
 fun SettingsTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
-  // Dynamic color is available on Android 12+
-  dynamicColor: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  val colorScheme =
-    when {
-      dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-        val context = LocalContext.current
-        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-      }
-      darkTheme -> DarkColorScheme
-      else -> LightColorScheme
-    }
-
-  MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
+  MaterialTheme(
+    colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+    typography = Typography,
+    content = content,
+  )
 }

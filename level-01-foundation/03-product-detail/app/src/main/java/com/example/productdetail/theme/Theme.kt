@@ -1,50 +1,73 @@
 package com.example.productdetail.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80)
 
 private val LightColorScheme =
   lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
+    primary = Vermilion,
+    onPrimary = OnVermilion,
+    primaryContainer = VermilionContainer,
+    onPrimaryContainer = OnVermilionContainer,
+    secondary = DeepNavy,
+    onSecondary = OnDeepNavy,
+    secondaryContainer = NavyContainer,
+    onSecondaryContainer = OnNavyContainer,
+    tertiary = EditorialGold,
+    onTertiary = OnEditorialGold,
+    tertiaryContainer = GoldContainer,
+    onTertiaryContainer = OnGoldContainer,
+    background = EditorialCream,
+    onBackground = Graphite,
+    surface = EditorialWhite,
+    onSurface = Graphite,
+    surfaceVariant = EditorialSurfaceVariant,
+    onSurfaceVariant = MutedEspresso,
+    outline = EditorialOutline,
+    outlineVariant = EditorialOutlineVariant,
+    inverseSurface = Espresso,
+    inverseOnSurface = OnEspresso,
+    inversePrimary = VermilionDark,
+  )
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val DarkColorScheme =
+  darkColorScheme(
+    primary = VermilionDark,
+    onPrimary = OnVermilionDark,
+    primaryContainer = VermilionContainerDark,
+    onPrimaryContainer = OnVermilionContainerDark,
+    secondary = DeepNavyDark,
+    onSecondary = OnDeepNavyDark,
+    secondaryContainer = NavyContainerDark,
+    onSecondaryContainer = OnNavyContainerDark,
+    tertiary = EditorialGoldDark,
+    onTertiary = OnEditorialGoldDark,
+    tertiaryContainer = GoldContainerDark,
+    onTertiaryContainer = OnGoldContainerDark,
+    background = EditorialNight,
+    onBackground = EditorialOnSurfaceDark,
+    surface = EditorialSurfaceDark,
+    onSurface = EditorialOnSurfaceDark,
+    surfaceVariant = EditorialSurfaceVariantDark,
+    onSurfaceVariant = EditorialOnSurfaceVariantDark,
+    outline = EditorialOutlineDark,
+    outlineVariant = EditorialOutlineVariantDark,
+    inverseSurface = EditorialOnSurfaceDark,
+    inverseOnSurface = EditorialNight,
+    inversePrimary = Vermilion,
   )
 
 @Composable
 fun ProductDetailTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
-  // Dynamic color is available on Android 12+
-  dynamicColor: Boolean = true,
   content: @Composable () -> Unit,
 ) {
-  val colorScheme =
-    when {
-      dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-        val context = LocalContext.current
-        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-      }
-      darkTheme -> DarkColorScheme
-      else -> LightColorScheme
-    }
-
-  MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
+  MaterialTheme(
+    colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+    typography = Typography,
+    content = content,
+  )
 }

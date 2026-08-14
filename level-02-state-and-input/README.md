@@ -60,5 +60,5 @@ Practice:
 ## Visual Identities
 
 - Shopping Cart: cobalt blue and lemon yellow on cool white
-- Checkout Form: violet and ice cyan, with lavender, cyan, and lemon hero slides
+- Checkout Form: neutral form surfaces with bold violet, cyan, and vivid yellow hero slides
 - Media Player: near-black with acid lime, electric cyan, and a pink favorite accent
