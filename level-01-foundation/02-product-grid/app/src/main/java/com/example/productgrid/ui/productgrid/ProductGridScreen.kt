@@ -14,12 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -109,16 +107,18 @@ private fun ProductCard(
   onFavoriteClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val palette = productPalette(product.id)
+
   Card(
     modifier = modifier.fillMaxWidth(),
     shape = RoundedCornerShape(20.dp),
-    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
   ) {
     Box(
       modifier =
         Modifier.fillMaxWidth()
           .aspectRatio(1.1f)
-          .background(productBackgroundColor(product.category)),
+          .background(palette.background),
     ) {
       Text(
         text = product.symbol,
@@ -151,19 +151,17 @@ private fun ProductCard(
         modifier =
           Modifier.align(Alignment.TopEnd)
             .padding(6.dp)
-            .size(40.dp)
-            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f), CircleShape)
             .semantics { contentDescription = "$favoriteAction: ${product.name}" },
       ) {
         Text(
-          text = if (product.isFavorite) "★" else "☆",
+          text = if (product.isFavorite) "♥︎" else "♡",
           color =
             if (product.isFavorite) {
-              MaterialTheme.colorScheme.primary
+              palette.accent
             } else {
-              MaterialTheme.colorScheme.onSurfaceVariant
+              palette.accent.copy(alpha = 0.78f)
             },
-          style = MaterialTheme.typography.titleLarge,
+          style = MaterialTheme.typography.headlineSmall,
         )
       }
     }
@@ -174,7 +172,7 @@ private fun ProductCard(
     ) {
       Text(
         text = product.category.uppercase(Locale.US),
-        color = MaterialTheme.colorScheme.primary,
+        color = palette.accent,
         style = MaterialTheme.typography.labelSmall,
         fontWeight = FontWeight.Bold,
       )
@@ -189,7 +187,7 @@ private fun ProductCard(
       Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
           text = "★",
-          color = MaterialTheme.colorScheme.tertiary,
+          color = Color(0xFFFFA000),
           style = MaterialTheme.typography.bodySmall,
         )
         Spacer(modifier = Modifier.width(4.dp))
@@ -208,16 +206,26 @@ private fun ProductCard(
   }
 }
 
-@Composable
-private fun productBackgroundColor(category: String): Color {
-  val colors = MaterialTheme.colorScheme
-  return when (category) {
-    "Audio" -> colors.primaryContainer
-    "Computers", "Electronics" -> colors.secondaryContainer
-    "Home", "Kitchen" -> colors.tertiaryContainer
-    "Fitness", "Outdoors" -> colors.surfaceContainerHighest
-    else -> colors.surfaceVariant
-  }
+private data class ProductPalette(
+  val background: Color,
+  val accent: Color,
+)
+
+private val productPalettes =
+  listOf(
+    ProductPalette(background = Color(0xFFFFD4C8), accent = Color(0xFFA93428)),
+    ProductPalette(background = Color(0xFFC9F1DF), accent = Color(0xFF08705A)),
+    ProductPalette(background = Color(0xFFFFE69B), accent = Color(0xFF855A00)),
+    ProductPalette(background = Color(0xFFC6DDFF), accent = Color(0xFF245DA6)),
+    ProductPalette(background = Color(0xFFE0CEFF), accent = Color(0xFF6940A5)),
+    ProductPalette(background = Color(0xFFFFCCDE), accent = Color(0xFFA92D5D)),
+    ProductPalette(background = Color(0xFFBFECEF), accent = Color(0xFF006B73)),
+    ProductPalette(background = Color(0xFFFFD2A8), accent = Color(0xFFA34D00)),
+  )
+
+private fun productPalette(productId: Long): ProductPalette {
+  val index = ((productId - 1).mod(productPalettes.size.toLong())).toInt()
+  return productPalettes[index]
 }
 
 private fun formatReviewCount(reviewCount: Int): String =
