@@ -1,7 +1,10 @@
 package com.example.productgrid.ui.productgrid
 
+import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,12 +32,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
@@ -43,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.productgrid.R
 import com.example.productgrid.data.mock.MockProducts
@@ -75,12 +84,16 @@ fun ProductGridScreen(
   Scaffold(
     modifier = modifier.fillMaxSize(),
     contentWindowInsets = WindowInsets.safeDrawing,
+    containerColor = MaterialTheme.colorScheme.background,
     topBar = {
       CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
         title = {
           Text(
-            text = "Discover",
-            fontWeight = FontWeight.Bold,
+            text = "COLOR MARKET",
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Black,
+            letterSpacing = 1.8.sp,
           )
         },
       )
@@ -118,32 +131,42 @@ private fun ProductCard(
     modifier = modifier.fillMaxWidth(),
     shape = RoundedCornerShape(20.dp),
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+    border = BorderStroke(1.dp, palette.accent.copy(alpha = 0.38f)),
+    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
   ) {
     Box(
       modifier =
         Modifier.fillMaxWidth()
           .aspectRatio(1.1f)
-          .background(palette.background),
+          .background(palette.well),
     ) {
       Image(
         painter = painterResource(product.image.drawableRes()),
         contentDescription = "${product.name} product image",
-        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)),
+        modifier =
+          Modifier.fillMaxSize()
+            .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+            .drawWithContent {
+              drawContent()
+              drawRect(
+                color = palette.well.copy(alpha = 0.82f),
+                blendMode = BlendMode.Multiply,
+              )
+            },
         contentScale = ContentScale.Crop,
       )
-
-      Box(modifier = Modifier.matchParentSize().background(palette.background.copy(alpha = 0.10f)))
 
       if (product.discountPercent > 0) {
         Surface(
           modifier = Modifier.align(Alignment.TopStart).padding(10.dp),
           shape = RoundedCornerShape(8.dp),
-          color = MaterialTheme.colorScheme.errorContainer,
+          color = MaterialTheme.colorScheme.inverseSurface,
+          contentColor = MaterialTheme.colorScheme.inverseOnSurface,
         ) {
           Text(
             text = "-${product.discountPercent}%",
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            color = MaterialTheme.colorScheme.onErrorContainer,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold,
           )
@@ -151,23 +174,23 @@ private fun ProductCard(
       }
 
       val favoriteAction = if (product.isFavorite) "Remove from favorites" else "Add to favorites"
-      IconButton(
-        onClick = onFavoriteClick,
-        modifier =
-          Modifier.align(Alignment.TopEnd)
-            .padding(6.dp)
-            .semantics { contentDescription = "$favoriteAction: ${product.name}" },
+      Surface(
+        modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
+        shape = RoundedCornerShape(14.dp),
+        color = palette.accent,
+        contentColor = palette.onAccent,
+        shadowElevation = 3.dp,
       ) {
-        Text(
-          text = if (product.isFavorite) "♥︎" else "♡",
-          color =
-            if (product.isFavorite) {
-              palette.accent
-            } else {
-              palette.accent.copy(alpha = 0.78f)
-            },
-          style = MaterialTheme.typography.headlineSmall,
-        )
+        IconButton(
+          onClick = onFavoriteClick,
+          modifier = Modifier.semantics { contentDescription = "$favoriteAction: ${product.name}" },
+        ) {
+          Text(
+            text = if (product.isFavorite) "♥︎" else "♡",
+            color = palette.onAccent,
+            style = MaterialTheme.typography.headlineSmall,
+          )
+        }
       }
     }
 
@@ -175,12 +198,21 @@ private fun ProductCard(
       modifier = Modifier.padding(12.dp),
       verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-      Text(
-        text = product.category.uppercase(Locale.US),
+      Surface(
+        shape = RoundedCornerShape(100.dp),
         color = palette.accent,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Bold,
-      )
+        contentColor = palette.onAccent,
+      ) {
+        Text(
+          text = product.category.uppercase(Locale.US),
+          modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+          style = MaterialTheme.typography.labelSmall,
+          fontWeight = FontWeight.Black,
+          letterSpacing = 0.6.sp,
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis,
+        )
+      }
       Text(
         text = product.name,
         modifier = Modifier.heightIn(min = 48.dp),
@@ -204,33 +236,49 @@ private fun ProductCard(
       }
       Text(
         text = String.format(Locale.US, "$%.2f", product.price),
+        color = palette.accent,
         style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Black,
       )
     }
   }
 }
 
 private data class ProductPalette(
-  val background: Color,
+  val well: Color,
   val accent: Color,
+  val onAccent: Color,
 )
 
-private val productPalettes =
+private val lightProductPalettes =
   listOf(
-    ProductPalette(background = Color(0xFFFFD4C8), accent = Color(0xFFA93428)),
-    ProductPalette(background = Color(0xFFC9F1DF), accent = Color(0xFF08705A)),
-    ProductPalette(background = Color(0xFFFFE69B), accent = Color(0xFF855A00)),
-    ProductPalette(background = Color(0xFFC6DDFF), accent = Color(0xFF245DA6)),
-    ProductPalette(background = Color(0xFFE0CEFF), accent = Color(0xFF6940A5)),
-    ProductPalette(background = Color(0xFFFFCCDE), accent = Color(0xFFA92D5D)),
-    ProductPalette(background = Color(0xFFBFECEF), accent = Color(0xFF006B73)),
-    ProductPalette(background = Color(0xFFFFD2A8), accent = Color(0xFFA34D00)),
+    ProductPalette(well = Color(0xFFFF5A4F), accent = Color(0xFFA61B14), onAccent = Color.White),
+    ProductPalette(well = Color(0xFF00A86B), accent = Color(0xFF00613E), onAccent = Color.White),
+    ProductPalette(well = Color(0xFFFFD400), accent = Color(0xFF6B5200), onAccent = Color.White),
+    ProductPalette(well = Color(0xFF2F5BFF), accent = Color(0xFF173BB9), onAccent = Color.White),
+    ProductPalette(well = Color(0xFF7C3AED), accent = Color(0xFF5B21B6), onAccent = Color.White),
+    ProductPalette(well = Color(0xFFE91E63), accent = Color(0xFFA30D43), onAccent = Color.White),
+    ProductPalette(well = Color(0xFF00B8D9), accent = Color(0xFF006778), onAccent = Color.White),
+    ProductPalette(well = Color(0xFFFF7A00), accent = Color(0xFF9A4300), onAccent = Color.White),
   )
 
+private val darkProductPalettes =
+  listOf(
+    ProductPalette(well = Color(0xFFFF5A4F), accent = Color(0xFFFF8B83), onAccent = Color(0xFF23100E)),
+    ProductPalette(well = Color(0xFF00A86B), accent = Color(0xFF4FE3A5), onAccent = Color(0xFF002117)),
+    ProductPalette(well = Color(0xFFFFD400), accent = Color(0xFFFFE066), onAccent = Color(0xFF241A00)),
+    ProductPalette(well = Color(0xFF2F5BFF), accent = Color(0xFF9DB0FF), onAccent = Color(0xFF071D58)),
+    ProductPalette(well = Color(0xFF7C3AED), accent = Color(0xFFC8A6FF), onAccent = Color(0xFF28104C)),
+    ProductPalette(well = Color(0xFFE91E63), accent = Color(0xFFFF80B0), onAccent = Color(0xFF3C0820)),
+    ProductPalette(well = Color(0xFF00B8D9), accent = Color(0xFF6CEAFF), onAccent = Color(0xFF002027)),
+    ProductPalette(well = Color(0xFFFF7A00), accent = Color(0xFFFFB168), onAccent = Color(0xFF301400)),
+  )
+
+@Composable
 private fun productPalette(productId: Long): ProductPalette {
-  val index = ((productId - 1).mod(productPalettes.size.toLong())).toInt()
-  return productPalettes[index]
+  val palettes = if (isSystemInDarkTheme()) darkProductPalettes else lightProductPalettes
+  val index = ((productId - 1).mod(palettes.size.toLong())).toInt()
+  return palettes[index]
 }
 
 private fun ProductImage.drawableRes(): Int =
@@ -277,7 +325,22 @@ private fun formatReviewCount(reviewCount: Int): String =
 @Preview(showBackground = true)
 @Composable
 private fun ProductGridScreenPreview() {
-  ProductGridTheme {
+  ProductGridTheme(darkTheme = false) {
+    ProductGridScreen(
+      products = MockProducts.items,
+      onFavoriteClick = {},
+    )
+  }
+}
+
+@Preview(
+  name = "Product grid · Dark",
+  showBackground = true,
+  uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+private fun ProductGridScreenDarkPreview() {
+  ProductGridTheme(darkTheme = true) {
     ProductGridScreen(
       products = MockProducts.items,
       onFavoriteClick = {},

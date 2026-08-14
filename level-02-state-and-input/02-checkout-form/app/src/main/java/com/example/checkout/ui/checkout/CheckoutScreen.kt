@@ -86,6 +86,15 @@ import com.example.checkout.data.model.PaymentType
 import com.example.checkout.data.model.ProductImage
 import com.example.checkout.data.model.ShippingOption
 import com.example.checkout.theme.CheckoutTheme
+import com.example.checkout.theme.Cyan
+import com.example.checkout.theme.Golden
+import com.example.checkout.theme.HeroViolet
+import com.example.checkout.theme.HeroYellow
+import com.example.checkout.theme.OnCyan
+import com.example.checkout.theme.OnGolden
+import com.example.checkout.theme.OnHeroYellow
+import com.example.checkout.theme.OnViolet
+import com.example.checkout.theme.Violet
 import kotlinx.coroutines.launch
 
 @Composable
@@ -604,29 +613,28 @@ private data class CheckoutHeroColors(
     val onAccent: Color,
 )
 
-@Composable
 private fun checkoutHeroColors(tone: CheckoutHeroTone): CheckoutHeroColors =
     when (tone) {
         CheckoutHeroTone.VIOLET ->
             CheckoutHeroColors(
-                container = MaterialTheme.colorScheme.primaryContainer,
-                content = MaterialTheme.colorScheme.onPrimaryContainer,
-                accent = MaterialTheme.colorScheme.primary,
-                onAccent = MaterialTheme.colorScheme.onPrimary,
+                container = HeroViolet,
+                content = OnViolet,
+                accent = Cyan,
+                onAccent = OnCyan,
             )
         CheckoutHeroTone.CYAN ->
             CheckoutHeroColors(
-                container = MaterialTheme.colorScheme.secondaryContainer,
-                content = MaterialTheme.colorScheme.onSecondaryContainer,
-                accent = MaterialTheme.colorScheme.secondary,
-                onAccent = MaterialTheme.colorScheme.onSecondary,
+                container = Cyan,
+                content = OnCyan,
+                accent = Golden,
+                onAccent = OnGolden,
             )
         CheckoutHeroTone.LEMON ->
             CheckoutHeroColors(
-                container = MaterialTheme.colorScheme.tertiaryContainer,
-                content = MaterialTheme.colorScheme.onTertiaryContainer,
-                accent = MaterialTheme.colorScheme.tertiary,
-                onAccent = MaterialTheme.colorScheme.onTertiary,
+                container = HeroYellow,
+                content = OnHeroYellow,
+                accent = Violet,
+                onAccent = OnViolet,
             )
     }
 

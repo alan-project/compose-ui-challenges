@@ -1,5 +1,6 @@
 package com.example.recipesearch.ui.recipesearch
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,11 +24,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -74,8 +77,17 @@ fun RecipeSearchScreen(
 ) {
   Scaffold(
     modifier = modifier.fillMaxSize(),
+    containerColor = MaterialTheme.colorScheme.background,
     contentWindowInsets = WindowInsets.safeDrawing,
-    topBar = { CenterAlignedTopAppBar(title = { Text("Find a Recipe", fontWeight = FontWeight.Bold) }) },
+    topBar = {
+      CenterAlignedTopAppBar(
+        title = { Text("Find a Recipe", fontWeight = FontWeight.Bold) },
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+          ),
+      )
+    },
   ) { innerPadding ->
     Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
       OutlinedTextField(
@@ -95,6 +107,11 @@ fun RecipeSearchScreen(
             selected = uiState.selectedCategory == category,
             onClick = { onCategorySelected(category) },
             label = { Text(category) },
+            colors =
+              FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+              ),
           )
         }
       }
@@ -127,7 +144,9 @@ private fun RecipeCard(recipe: Recipe, onFavoriteClick: () -> Unit) {
   Card(
     modifier = Modifier.fillMaxWidth(),
     shape = RoundedCornerShape(20.dp),
-    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
   ) {
     Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
       Image(
@@ -141,11 +160,11 @@ private fun RecipeCard(recipe: Recipe, onFavoriteClick: () -> Unit) {
         Text(recipe.category.uppercase(), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
         Text(recipe.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Text("${recipe.durationMinutes} min  •  ${recipe.calories} cal", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
-        Text("★ ${recipe.rating}", color = MaterialTheme.colorScheme.tertiary, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+        Text("★ ${recipe.rating}", color = MaterialTheme.colorScheme.secondary, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
       }
       val action = if (recipe.isFavorite) "Remove from favorites" else "Add to favorites"
       IconButton(onClick = onFavoriteClick, modifier = Modifier.semantics { contentDescription = "$action: ${recipe.name}" }) {
-        Text(if (recipe.isFavorite) "♥︎" else "♡", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.headlineSmall)
+        Text(if (recipe.isFavorite) "♥︎" else "♡", color = MaterialTheme.colorScheme.tertiary, style = MaterialTheme.typography.headlineSmall)
       }
     }
   }

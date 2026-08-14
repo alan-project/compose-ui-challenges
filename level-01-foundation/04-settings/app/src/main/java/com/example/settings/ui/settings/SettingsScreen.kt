@@ -1,6 +1,8 @@
 package com.example.settings.ui.settings
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -25,13 +27,16 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -77,8 +82,18 @@ fun SettingsScreen(
 ) {
   Scaffold(
     modifier = modifier.fillMaxSize(),
+    containerColor = MaterialTheme.colorScheme.background,
     contentWindowInsets = WindowInsets.safeDrawing,
-    topBar = { CenterAlignedTopAppBar(title = { Text("Settings", fontWeight = FontWeight.Bold) }) },
+    topBar = {
+      CenterAlignedTopAppBar(
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            titleContentColor = MaterialTheme.colorScheme.primary,
+          ),
+        title = { Text("Settings", fontWeight = FontWeight.Bold) },
+      )
+    },
   ) { innerPadding ->
     LazyColumn(
       modifier = Modifier.fillMaxSize().padding(innerPadding),
@@ -88,21 +103,30 @@ fun SettingsScreen(
       item { ProfileCard(preferences) }
       item { SectionTitle("Account & security") }
       item {
-        SettingsCard {
+        SettingsCard(
+          containerColor = MaterialTheme.colorScheme.surface,
+          contentColor = MaterialTheme.colorScheme.onSurface,
+        ) {
           SettingSwitchRow("Push notifications", "News, reminders, and account updates", preferences.notificationsEnabled, onNotificationsChanged)
           SettingSwitchRow("Biometric unlock", "Use face or fingerprint to unlock", preferences.biometricEnabled, onBiometricChanged)
         }
       }
       item { SectionTitle("Playback & downloads") }
       item {
-        SettingsCard {
+        SettingsCard(
+          containerColor = MaterialTheme.colorScheme.secondaryContainer,
+          contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        ) {
           SettingSwitchRow("Download on Wi-Fi only", "Protect your mobile data", preferences.downloadOnWifi, onDownloadOnWifiChanged)
           SettingSwitchRow("Autoplay videos", "Play previews while browsing", preferences.autoplayVideos, onAutoplayChanged)
         }
       }
       item { SectionTitle("Appearance") }
       item {
-        SettingsCard {
+        SettingsCard(
+          containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+          contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        ) {
           Text("Theme", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
           Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ThemeMode.entries.forEach { mode ->
@@ -129,27 +153,53 @@ private fun ProfileCard(preferences: SettingsPreferences) {
   Card(
     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     shape = RoundedCornerShape(24.dp),
+    border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary.copy(alpha = 0.55f)),
+    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
   ) {
     Row(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
       Image(
         painter = painterResource(R.drawable.profile_maya),
         contentDescription = "${preferences.displayName} profile photo",
-        modifier = Modifier.size(84.dp).clip(CircleShape),
+        modifier =
+          Modifier
+            .size(84.dp)
+            .border(3.dp, MaterialTheme.colorScheme.tertiaryContainer, CircleShape)
+            .clip(CircleShape),
         contentScale = ContentScale.Crop,
       )
       Spacer(Modifier.width(16.dp))
       Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
         Text(preferences.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-        Text(preferences.email, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f), style = MaterialTheme.typography.bodyMedium)
-        Text(preferences.membership, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+        Text(preferences.email, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.78f), style = MaterialTheme.typography.bodyMedium)
+        Surface(
+          shape = RoundedCornerShape(100.dp),
+          color = MaterialTheme.colorScheme.tertiaryContainer,
+          contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        ) {
+          Text(
+            text = preferences.membership,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+          )
+        }
       }
     }
   }
 }
 
 @Composable
-private fun SettingsCard(content: @Composable ColumnScope.() -> Unit) {
-  Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer), shape = RoundedCornerShape(20.dp)) {
+private fun SettingsCard(
+  containerColor: Color,
+  contentColor: Color,
+  content: @Composable ColumnScope.() -> Unit,
+) {
+  Card(
+    colors = CardDefaults.cardColors(containerColor = containerColor, contentColor = contentColor),
+    shape = RoundedCornerShape(20.dp),
+    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+  ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp), content = content)
   }
 }
