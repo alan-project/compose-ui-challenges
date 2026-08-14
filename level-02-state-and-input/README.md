@@ -25,11 +25,12 @@ Practice:
 
 ### 02 — Checkout Form
 
-Build a checkout form with validation, shipping and payment choices, a calculated total, and an order confirmation dialog.
+Build a checkout form with a swipeable hero, validation, shipping and payment choices, a calculated total, and an order confirmation dialog.
 
 Practice:
 
 - Text input and validation
+- Pager state and horizontal gestures
 - Focus and IME-safe layouts
 - Selectable controls
 - Submission state
@@ -55,3 +56,9 @@ Practice:
 - In-memory mock data
 - No Hilt, Room, or Navigation
 - Real bitmap imagery where imagery is part of the design
+
+## Visual Identities
+
+- Shopping Cart: cobalt blue and lemon yellow on cool white
+- Checkout Form: violet and ice cyan, with lavender, cyan, and lemon hero slides
+- Media Player: near-black with acid lime, electric cyan, and a pink favorite accent
