@@ -563,7 +563,7 @@ private fun CheckoutHeroCard(
                 Spacer(Modifier.weight(1f))
                 Surface(
                     shape = RoundedCornerShape(100.dp),
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.88f),
+                    color = Color.White,
                     contentColor = colors.accent,
                 ) {
                     Text(
