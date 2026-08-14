@@ -3,6 +3,7 @@ package com.example.checkout.ui.checkout
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -327,8 +328,6 @@ private fun CheckoutContent(
                         )
                     }
                 }
-                Spacer(Modifier.height(16.dp))
-                SecurePaymentNote()
             }
 
             OrderTotalCard(uiState)
@@ -352,7 +351,7 @@ private fun CheckoutContent(
                 val confirmation = uiState.orderConfirmation
                 if (confirmation == null) {
                     Text(
-                        text = "Save demo order",
+                        text = "Place order",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                     )
@@ -364,7 +363,7 @@ private fun CheckoutContent(
                     )
                 } else {
                     Text(
-                        text = "Demo order ${confirmation.orderNumber} saved",
+                        text = "Order ${confirmation.orderNumber} confirmed",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                     )
@@ -372,14 +371,6 @@ private fun CheckoutContent(
                     Text("✓", style = MaterialTheme.typography.titleLarge)
                 }
             }
-
-            Text(
-                text = "Practice checkout · No payment is processed and no real order leaves this device.",
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(Modifier.height(6.dp))
         }
     }
 }
@@ -392,7 +383,7 @@ private fun ValidationSummary(invalidFields: Set<CheckoutField>) {
             .joinToString(separator = ", ") { field -> field.validationLabel }
     val fieldCount = invalidFields.size
     val message =
-        "Check $fieldCount ${if (fieldCount == 1) "field" else "fields"} before saving this demo order: $fieldNames."
+        "Check $fieldCount ${if (fieldCount == 1) "field" else "fields"} before placing your order: $fieldNames."
 
     Surface(
         modifier =
@@ -658,7 +649,7 @@ private val CheckoutHeroSlides =
         CheckoutHeroSlide(
             id = "total",
             title = "Clear from the start.",
-            description = "Review the full total before placing your demo order.",
+            description = "Review the full total before placing your order.",
             badge = "NO SURPRISES",
             tone = CheckoutHeroTone.LEMON,
         ),
@@ -670,7 +661,8 @@ private fun OrderSummaryCard(items: List<OrderItem>) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 1.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        shadowElevation = 1.dp,
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -750,7 +742,8 @@ private fun CheckoutSection(content: @Composable ColumnScope.() -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 1.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        shadowElevation = 1.dp,
     ) {
         Column(
             modifier = Modifier.padding(18.dp),
@@ -935,9 +928,9 @@ private fun PaymentMethodCard(
         animateColorAsState(
             targetValue =
                 if (selected) {
-                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.52f)
+                    MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.62f)
+                    MaterialTheme.colorScheme.surfaceVariant
                 },
             label = "payment method container",
         )
@@ -1016,42 +1009,13 @@ private fun PaymentBadge(type: PaymentType) {
 }
 
 @Composable
-private fun SecurePaymentNote() {
-    Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(14.dp))
-                .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.48f))
-                .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Surface(
-            modifier = Modifier.size(28.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.onSecondary,
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Text("✓", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
-            }
-        }
-        Spacer(Modifier.width(10.dp))
-        Text(
-            text = "In-memory demo · No payment details are transmitted",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-        )
-    }
-}
-
-@Composable
 private fun OrderTotalCard(uiState: CheckoutUiState) {
     Surface(
         modifier = Modifier.fillMaxWidth().animateContentSize(),
         shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 1.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        shadowElevation = 1.dp,
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text("Order total", style = MaterialTheme.typography.titleLarge)
@@ -1117,7 +1081,7 @@ private fun OrderSuccessDialog(
                 modifier =
                     Modifier
                         .size(64.dp)
-                        .semantics { contentDescription = "Demo order saved" },
+                        .semantics { contentDescription = "Order confirmed" },
                 shape = CircleShape,
                 color = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -1129,7 +1093,7 @@ private fun OrderSuccessDialog(
         },
         title = {
             Text(
-                text = "Demo order saved!",
+                text = "Order confirmed!",
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.headlineSmall,
             )
@@ -1137,7 +1101,7 @@ private fun OrderSuccessDialog(
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    text = "Order $orderNumber is stored in memory for this practice app.",
+                    text = "Order $orderNumber has been confirmed.",
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Surface(
@@ -1148,9 +1112,9 @@ private fun OrderSuccessDialog(
                         modifier = Modifier.fillMaxWidth().padding(14.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        Text("Mock delivery · $arrivalEstimate", style = MaterialTheme.typography.labelLarge)
+                        Text("Estimated delivery · $arrivalEstimate", style = MaterialTheme.typography.labelLarge)
                         Text(
-                            text = "No email was sent to $email",
+                            text = "Receipt email · $email",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
