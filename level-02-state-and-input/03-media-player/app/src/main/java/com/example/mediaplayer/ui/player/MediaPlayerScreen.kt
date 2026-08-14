@@ -74,10 +74,10 @@ import com.example.mediaplayer.data.model.Track
 import com.example.mediaplayer.theme.MediaPlayerTheme
 import java.util.Locale
 
-private val PlayerGlow = Color(0xFF3B204E)
-private val PlayerInk = Color(0xFF090A0F)
-private val FrostedWhite = Color(0xFFF8F4FA)
-private val MutedWhite = Color(0xFFAFA8B6)
+private val PlayerGlow = Color(0xFF0A2454)
+private val PlayerInk = Color(0xFF05070D)
+private val FrostedWhite = Color(0xFFF4F7FA)
+private val MutedWhite = Color(0xFFAAB4C0)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -333,7 +333,7 @@ private fun TrackDetails(
       )
       Text(
         text = track.artist,
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondary,
         style = MaterialTheme.typography.titleMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -360,7 +360,7 @@ private fun TrackDetails(
             if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border,
           ),
         contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
-        tint = if (isFavorite) MaterialTheme.colorScheme.primary else FrostedWhite,
+        tint = if (isFavorite) MaterialTheme.colorScheme.tertiary else FrostedWhite,
       )
     }
   }
@@ -388,7 +388,7 @@ private fun PlaybackTimeline(
         SliderDefaults.colors(
           thumbColor = MaterialTheme.colorScheme.primary,
           activeTrackColor = MaterialTheme.colorScheme.primary,
-          inactiveTrackColor = Color.White.copy(alpha = 0.18f),
+          inactiveTrackColor = MaterialTheme.colorScheme.outline,
         ),
     )
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -522,7 +522,7 @@ private fun ModeControl(
   modifier: Modifier = Modifier,
   stateDescription: String? = selected?.let { if (it) "On" else "Off" },
 ) {
-  val contentColor = if (selected == true) MaterialTheme.colorScheme.primary else MutedWhite
+  val contentColor = if (selected == true) MaterialTheme.colorScheme.secondary else MutedWhite
   Column(
     modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -582,7 +582,7 @@ private fun QueueSheetContent(
         }
         Text(
           text = "${uiState.queue.size} TRACKS",
-          color = MaterialTheme.colorScheme.primary,
+          color = MaterialTheme.colorScheme.secondary,
           style = MaterialTheme.typography.labelSmall,
           fontWeight = FontWeight.Bold,
           letterSpacing = 1.sp,
@@ -704,7 +704,7 @@ private fun formatDuration(durationMs: Long): String {
   return String.format(Locale.US, "%d:%02d", totalSeconds / 60L, totalSeconds % 60L)
 }
 
-@Preview(name = "Player", showBackground = true, backgroundColor = 0xFF090A0F)
+@Preview(name = "Player", showBackground = true, backgroundColor = 0xFF05070D)
 @Composable
 private fun MediaPlayerScreenPreview() {
   MediaPlayerTheme {
@@ -722,7 +722,7 @@ private fun MediaPlayerScreenPreview() {
   }
 }
 
-@Preview(name = "Queue", showBackground = true, backgroundColor = 0xFF14151E)
+@Preview(name = "Queue", showBackground = true, backgroundColor = 0xFF111722)
 @Composable
 private fun QueueSheetPreview() {
   MediaPlayerTheme {

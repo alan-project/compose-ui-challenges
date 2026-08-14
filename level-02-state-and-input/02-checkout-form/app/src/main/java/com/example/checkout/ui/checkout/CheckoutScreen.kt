@@ -2,6 +2,7 @@ package com.example.checkout.ui.checkout
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,12 +18,15 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
@@ -46,6 +50,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +65,7 @@ import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -79,6 +85,7 @@ import com.example.checkout.data.model.PaymentType
 import com.example.checkout.data.model.ProductImage
 import com.example.checkout.data.model.ShippingOption
 import com.example.checkout.theme.CheckoutTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun CheckoutRoute(
@@ -431,22 +438,117 @@ private fun ValidationSummary(invalidFields: Set<CheckoutField>) {
 
 @Composable
 private fun CheckoutHeader() {
-    Surface(
+    val pagerState = rememberPagerState(pageCount = { CheckoutHeroSlides.size })
+    val coroutineScope = rememberCoroutineScope()
+
+    Column(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(30.dp),
-        color = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Column(modifier = Modifier.padding(24.dp)) {
+        HorizontalPager(
+            state = pagerState,
+            key = { CheckoutHeroSlides[it].id },
+            pageSpacing = 12.dp,
+            beyondViewportPageCount = 1,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .semantics {
+                        stateDescription =
+                            "Checkout highlight ${pagerState.settledPage + 1} of ${CheckoutHeroSlides.size}"
+                    },
+        ) { page ->
+            CheckoutHeroCard(slide = CheckoutHeroSlides[page])
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth().selectableGroup(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            CheckoutHeroSlides.forEachIndexed { index, slide ->
+                val selected = pagerState.currentPage == index
+                val indicatorWidth by
+                    animateDpAsState(
+                        targetValue = if (selected) 34.dp else 12.dp,
+                        label = "hero indicator width",
+                    )
+                val indicatorColor by
+                    animateColorAsState(
+                        targetValue =
+                            if (selected) {
+                                when (index) {
+                                    0 -> MaterialTheme.colorScheme.primary
+                                    1 -> MaterialTheme.colorScheme.secondary
+                                    else -> MaterialTheme.colorScheme.tertiary
+                                }
+                            } else {
+                                MaterialTheme.colorScheme.outline
+                            },
+                        label = "hero indicator color",
+                    )
+
+                Box(
+                    modifier =
+                        Modifier
+                            .size(width = 48.dp, height = 48.dp)
+                            .clip(CircleShape)
+                            .selectable(
+                                selected = selected,
+                                onClick = {
+                                    coroutineScope.launch {
+                                        pagerState.animateScrollToPage(index)
+                                    }
+                                },
+                                role = Role.Tab,
+                            ).semantics {
+                                contentDescription =
+                                    "Checkout highlight ${index + 1} of ${CheckoutHeroSlides.size}: ${slide.title}"
+                            },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Box(
+                        modifier =
+                            Modifier
+                                .width(indicatorWidth)
+                                .height(6.dp)
+                                .clip(CircleShape)
+                                .background(indicatorColor),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CheckoutHeroCard(
+    slide: CheckoutHeroSlide,
+) {
+    val colors = checkoutHeroColors(slide.tone)
+
+    Surface(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 250.dp),
+        shape = RoundedCornerShape(30.dp),
+        color = colors.container,
+        contentColor = colors.content,
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Surface(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(40.dp),
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    color = colors.accent,
+                    contentColor = colors.onAccent,
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Text("L", fontWeight = FontWeight.ExtraBold)
@@ -461,54 +563,106 @@ private fun CheckoutHeader() {
                 Spacer(Modifier.weight(1f))
                 Surface(
                     shape = RoundedCornerShape(100.dp),
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.62f),
-                    contentColor = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.88f),
+                    contentColor = colors.accent,
                 ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text("✓", fontWeight = FontWeight.Black)
-                        Spacer(Modifier.width(5.dp))
-                        Text("DEMO", style = MaterialTheme.typography.labelMedium)
-                    }
+                    Text(
+                        text = slide.badge,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
                 }
             }
 
-            Spacer(Modifier.height(28.dp))
-            Text(
-                text = "Almost yours.",
-                style = MaterialTheme.typography.displaySmall,
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = "Complete the details below and we’ll take care of the rest.",
-                modifier = Modifier.widthIn(max = 470.dp),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.78f),
-            )
-            Spacer(Modifier.height(24.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                repeat(3) { index ->
-                    Box(
-                        modifier =
-                            Modifier
-                                .height(5.dp)
-                                .weight(if (index == 2) 1.5f else 1f)
-                                .clip(CircleShape)
-                                .background(
-                                    if (index == 2) {
-                                        MaterialTheme.colorScheme.primary
-                                    } else {
-                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.32f)
-                                    },
-                                ),
-                    )
-                }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = slide.title,
+                    modifier = Modifier.semantics { heading() },
+                    style = MaterialTheme.typography.displaySmall,
+                )
+                Text(
+                    text = slide.description,
+                    modifier = Modifier.widthIn(max = 470.dp),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = colors.content,
+                )
             }
         }
     }
 }
+
+private data class CheckoutHeroSlide(
+    val id: String,
+    val title: String,
+    val description: String,
+    val badge: String,
+    val tone: CheckoutHeroTone,
+)
+
+private enum class CheckoutHeroTone {
+    VIOLET,
+    CYAN,
+    LEMON,
+}
+
+private data class CheckoutHeroColors(
+    val container: Color,
+    val content: Color,
+    val accent: Color,
+    val onAccent: Color,
+)
+
+@Composable
+private fun checkoutHeroColors(tone: CheckoutHeroTone): CheckoutHeroColors =
+    when (tone) {
+        CheckoutHeroTone.VIOLET ->
+            CheckoutHeroColors(
+                container = MaterialTheme.colorScheme.primaryContainer,
+                content = MaterialTheme.colorScheme.onPrimaryContainer,
+                accent = MaterialTheme.colorScheme.primary,
+                onAccent = MaterialTheme.colorScheme.onPrimary,
+            )
+        CheckoutHeroTone.CYAN ->
+            CheckoutHeroColors(
+                container = MaterialTheme.colorScheme.secondaryContainer,
+                content = MaterialTheme.colorScheme.onSecondaryContainer,
+                accent = MaterialTheme.colorScheme.secondary,
+                onAccent = MaterialTheme.colorScheme.onSecondary,
+            )
+        CheckoutHeroTone.LEMON ->
+            CheckoutHeroColors(
+                container = MaterialTheme.colorScheme.tertiaryContainer,
+                content = MaterialTheme.colorScheme.onTertiaryContainer,
+                accent = MaterialTheme.colorScheme.tertiary,
+                onAccent = MaterialTheme.colorScheme.onTertiary,
+            )
+    }
+
+private val CheckoutHeroSlides =
+    listOf(
+        CheckoutHeroSlide(
+            id = "secure",
+            title = "Almost yours.",
+            description = "Complete your details and we’ll handle the rest.",
+            badge = "SECURE",
+            tone = CheckoutHeroTone.VIOLET,
+        ),
+        CheckoutHeroSlide(
+            id = "delivery",
+            title = "Delivery, your way.",
+            description = "Choose the pace that fits your week and budget.",
+            badge = "FLEXIBLE",
+            tone = CheckoutHeroTone.CYAN,
+        ),
+        CheckoutHeroSlide(
+            id = "total",
+            title = "Clear from the start.",
+            description = "Review the full total before placing your demo order.",
+            badge = "NO SURPRISES",
+            tone = CheckoutHeroTone.LEMON,
+        ),
+    )
 
 @Composable
 private fun OrderSummaryCard(items: List<OrderItem>) {
@@ -548,7 +702,7 @@ private fun OrderSummaryCard(items: List<OrderItem>) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(item.image.drawableRes()),
-                        contentDescription = "${item.name} product image",
+                        contentDescription = null,
                         modifier =
                             Modifier
                                 .size(88.dp)

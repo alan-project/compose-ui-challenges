@@ -8,14 +8,6 @@ object MockMusic {
   val tracks =
     listOf(
       Track(
-        id = "afterglow",
-        title = "Afterglow",
-        artist = "Nova Lane",
-        album = "Chromatic Skies",
-        durationMs = 222_000L,
-        artwork = AlbumArtwork.AFTERGLOW,
-      ),
-      Track(
         id = "blue-hour",
         title = "Blue Hour",
         artist = "Lumen Park",
@@ -30,6 +22,14 @@ object MockMusic {
         album = "Neon Geography",
         durationMs = 208_000L,
         artwork = AlbumArtwork.NIGHT_DRIVE,
+      ),
+      Track(
+        id = "afterglow",
+        title = "Afterglow",
+        artist = "Nova Lane",
+        album = "Chromatic Skies",
+        durationMs = 222_000L,
+        artwork = AlbumArtwork.AFTERGLOW,
       ),
     )
 

@@ -57,7 +57,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -400,7 +399,7 @@ private fun CartItemCard(
                 modifier =
                     Modifier.size(width = 104.dp, height = 144.dp)
                         .clip(RoundedCornerShape(18.dp))
-                        .background(productTint(item.image)),
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Image(
                     painter = painterResource(item.image.drawableRes()),
@@ -635,38 +634,45 @@ private fun FreeShippingStatus(
             else -> "${uiState.remainingForFreeShippingCents.asCurrency()} away from free delivery"
         }
 
-    Column(
+    Surface(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = "${(progress * 100).toInt()}%",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelMedium,
-            )
-        }
-        Box(
-            modifier =
-                Modifier.fillMaxWidth()
-                    .height(6.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(7.dp),
         ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "${(progress * 100).toInt()}%",
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
             Box(
                 modifier =
-                    Modifier.fillMaxWidth(progress)
-                        .fillMaxHeight()
+                    Modifier.fillMaxWidth()
+                        .height(6.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.secondary),
-            )
+                        .background(
+                            MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.16f),
+                        ),
+            ) {
+                Box(
+                    modifier =
+                        Modifier.fillMaxWidth(progress)
+                            .fillMaxHeight()
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary),
+                )
+            }
         }
     }
 }
@@ -779,14 +785,6 @@ private fun ProductImage.drawableRes(): Int =
         ProductImage.KEYBOARD -> R.drawable.product_keyboard
         ProductImage.SMARTWATCH -> R.drawable.product_smartwatch
         ProductImage.BACKPACK -> R.drawable.product_backpack
-    }
-
-private fun productTint(image: ProductImage): Color =
-    when (image) {
-        ProductImage.HEADPHONES -> Color(0xFFFFD9CC)
-        ProductImage.KEYBOARD -> Color(0xFFCDEDE1)
-        ProductImage.SMARTWATCH -> Color(0xFFFFE8AF)
-        ProductImage.BACKPACK -> Color(0xFFD9E3C3)
     }
 
 private fun Long.asCurrency(): String =

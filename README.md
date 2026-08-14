@@ -7,7 +7,7 @@ A collection of focused, single-screen Android projects for practicing Jetpack C
 This repository uses two branches for every project:
 
 - `exercise`: complete project setup, models, mock data, repositories, themes, and image assets with compile-ready UI and ViewModel starting points.
-- `solution`: the finished implementation and its tests.
+- `solution`: the finished implementation.
 
 Because the branches belong to the whole repository, switching from `exercise` to `solution` changes every project at once. Commit or stash your work before switching branches.
 
