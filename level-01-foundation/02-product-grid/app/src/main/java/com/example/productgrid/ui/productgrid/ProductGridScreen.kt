@@ -1,5 +1,6 @@
 package com.example.productgrid.ui.productgrid
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,17 +33,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.productgrid.R
 import com.example.productgrid.data.mock.MockProducts
 import com.example.productgrid.data.model.Product
+import com.example.productgrid.data.model.ProductImage
 import com.example.productgrid.theme.ProductGridTheme
 import java.util.Locale
 
@@ -120,14 +125,14 @@ private fun ProductCard(
           .aspectRatio(1.1f)
           .background(palette.background),
     ) {
-      Text(
-        text = product.symbol,
-        modifier =
-          Modifier.align(Alignment.Center).semantics {
-            contentDescription = "${product.name} product image"
-          },
-        fontSize = 52.sp,
+      Image(
+        painter = painterResource(product.image.drawableRes()),
+        contentDescription = "${product.name} product image",
+        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)),
+        contentScale = ContentScale.Crop,
       )
+
+      Box(modifier = Modifier.matchParentSize().background(palette.background.copy(alpha = 0.10f)))
 
       if (product.discountPercent > 0) {
         Surface(
@@ -227,6 +232,40 @@ private fun productPalette(productId: Long): ProductPalette {
   val index = ((productId - 1).mod(productPalettes.size.toLong())).toInt()
   return productPalettes[index]
 }
+
+private fun ProductImage.drawableRes(): Int =
+  when (this) {
+    ProductImage.HEADPHONES -> R.drawable.product_headphones
+    ProductImage.KEYBOARD -> R.drawable.product_keyboard
+    ProductImage.SMARTWATCH -> R.drawable.product_smartwatch
+    ProductImage.SPEAKER -> R.drawable.product_speaker
+    ProductImage.CAMERA -> R.drawable.product_camera
+    ProductImage.MOUSE -> R.drawable.product_mouse
+    ProductImage.E_READER -> R.drawable.product_e_reader
+    ProductImage.PROJECTOR -> R.drawable.product_projector
+    ProductImage.CHARGING_HUB -> R.drawable.product_charging_hub
+    ProductImage.MICROPHONE -> R.drawable.product_microphone
+    ProductImage.BACKPACK -> R.drawable.product_backpack
+    ProductImage.DESK_LAMP -> R.drawable.product_desk_lamp
+    ProductImage.TRAVEL_BOTTLE -> R.drawable.product_travel_bottle
+    ProductImage.PHOTO_PRINTER -> R.drawable.product_photo_printer
+    ProductImage.TABLET_STAND -> R.drawable.product_tablet_stand
+    ProductImage.AIR_PURIFIER -> R.drawable.product_air_purifier
+    ProductImage.HANDHELD_CONSOLE -> R.drawable.product_handheld_console
+    ProductImage.MINI_VACUUM -> R.drawable.product_mini_vacuum
+    ProductImage.YOGA_MAT -> R.drawable.product_yoga_mat
+    ProductImage.COFFEE_GRINDER -> R.drawable.product_coffee_grinder
+    ProductImage.CHARGING_PAD -> R.drawable.product_charging_pad
+    ProductImage.KITCHEN_SCALE -> R.drawable.product_kitchen_scale
+    ProductImage.ALARM_CLOCK -> R.drawable.product_alarm_clock
+    ProductImage.TRAVEL_UMBRELLA -> R.drawable.product_travel_umbrella
+    ProductImage.BINOCULARS -> R.drawable.product_binoculars
+    ProductImage.COOKWARE -> R.drawable.product_cookware
+    ProductImage.PLANT_POT -> R.drawable.product_plant_pot
+    ProductImage.RUNNING_SHOES -> R.drawable.product_running_shoes
+    ProductImage.SUNGLASSES -> R.drawable.product_sunglasses
+    ProductImage.TRAVEL_CASE -> R.drawable.product_travel_case
+  }
 
 private fun formatReviewCount(reviewCount: Int): String =
   if (reviewCount >= 1_000) {
