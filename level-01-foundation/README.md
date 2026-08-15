@@ -1,6 +1,6 @@
-# Level 1 — Foundation
+# Level 1 — Foundation Challenges
 
-Level 1 focuses on composing polished single-screen layouts from reusable Material 3 building blocks. Every folder is an independent Android project with mock data, an MVVM presentation layer, and no navigation or persistence framework.
+Level 1 focuses on composing polished single-screen layouts from reusable Material 3 building blocks. Every folder is an independent Android challenge with mock data, an MVVM presentation layer, and no navigation or persistence framework.
 
 ## Projects
 
@@ -37,4 +37,4 @@ A finance dashboard combining summary cards, progress indicators, a bar chart, b
 - Search and Filter: warm white with basil green, saffron, and tomato accents
 - Dashboard: professional navy, electric blue, mint, and coral
 
-Dynamic Color is intentionally disabled in these projects so each exercise keeps a deterministic visual identity on every device. Light and dark color schemes remain available where the system theme changes.
+Dynamic Color is intentionally disabled in these projects so each challenge keeps a deterministic visual identity on every device. Light and dark color schemes remain available where the system theme changes.
