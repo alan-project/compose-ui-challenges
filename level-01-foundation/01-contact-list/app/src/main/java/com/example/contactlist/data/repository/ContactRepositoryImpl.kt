@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class InMemoryContactRepository : ContactRepository {
+// Mock repository backed by in-memory data for this Compose exercise.
+class ContactRepositoryImpl : ContactRepository {
   private val _contacts = MutableStateFlow(MockContacts.items)
 
   override val contacts: Flow<List<Contact>> = _contacts.asStateFlow()
