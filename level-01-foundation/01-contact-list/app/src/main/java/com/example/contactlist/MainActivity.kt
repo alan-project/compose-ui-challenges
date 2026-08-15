@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.contactlist.data.repository.InMemoryContactRepository
+import com.example.contactlist.data.repository.ContactRepositoryImpl
 import com.example.contactlist.theme.ContactListTheme
 import com.example.contactlist.ui.contactlist.ContactListRoute
 import com.example.contactlist.ui.contactlist.ContactListViewModel
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         ) {
           val viewModel =
             viewModel<ContactListViewModel> {
-              ContactListViewModel(InMemoryContactRepository())
+              ContactListViewModel(ContactRepositoryImpl())
             }
 
           ContactListRoute(viewModel = viewModel)
