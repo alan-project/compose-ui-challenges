@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -39,14 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.contactlist.data.mock.MockContacts
 import com.example.contactlist.data.model.Contact
-import com.example.contactlist.theme.AvatarCerulean
-import com.example.contactlist.theme.AvatarCobalt
-import com.example.contactlist.theme.AvatarDarkContent
-import com.example.contactlist.theme.AvatarEmerald
-import com.example.contactlist.theme.AvatarLightContent
-import com.example.contactlist.theme.AvatarMagenta
-import com.example.contactlist.theme.AvatarSunflower
-import com.example.contactlist.theme.AvatarTangerine
 import com.example.contactlist.theme.ContactListTheme
 
 @Composable
@@ -117,8 +108,6 @@ private fun ContactRow(
   onFavoriteClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val avatarPalette = contactAvatarPalette(contact.id)
-
   Row(
     modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
     verticalAlignment = Alignment.CenterVertically,
@@ -127,12 +116,12 @@ private fun ContactRow(
       modifier =
         Modifier.size(48.dp)
           .clip(CircleShape)
-          .background(avatarPalette.background),
+          .background(MaterialTheme.colorScheme.primary),
       contentAlignment = Alignment.Center,
     ) {
       Text(
         text = contact.name.firstOrNull()?.toString().orEmpty(),
-        color = avatarPalette.content,
+        color = MaterialTheme.colorScheme.onPrimary,
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold,
       )
@@ -161,20 +150,14 @@ private fun ContactRow(
       onClick = onFavoriteClick,
       modifier =
         Modifier
-          .clip(CircleShape)
-          .background(
-            if (contact.isFavorite) {
-              MaterialTheme.colorScheme.tertiaryContainer
-            } else {
-              MaterialTheme.colorScheme.surfaceVariant
-            },
-          ).semantics { contentDescription = "$favoriteAction: ${contact.name}" },
+          .size(48.dp)
+          .semantics { contentDescription = "$favoriteAction: ${contact.name}" },
     ) {
       Text(
         text = if (contact.isFavorite) "★" else "☆",
         color =
           if (contact.isFavorite) {
-            MaterialTheme.colorScheme.secondary
+            MaterialTheme.colorScheme.primary
           } else {
             MaterialTheme.colorScheme.onSurfaceVariant
           },
@@ -183,26 +166,6 @@ private fun ContactRow(
       )
     }
   }
-}
-
-private data class ContactAvatarPalette(
-  val background: Color,
-  val content: Color,
-)
-
-private val contactAvatarPalettes =
-  listOf(
-    ContactAvatarPalette(AvatarCerulean, AvatarLightContent),
-    ContactAvatarPalette(AvatarTangerine, AvatarLightContent),
-    ContactAvatarPalette(AvatarSunflower, AvatarDarkContent),
-    ContactAvatarPalette(AvatarCobalt, AvatarLightContent),
-    ContactAvatarPalette(AvatarMagenta, AvatarLightContent),
-    ContactAvatarPalette(AvatarEmerald, AvatarLightContent),
-  )
-
-private fun contactAvatarPalette(contactId: Long): ContactAvatarPalette {
-  val index = ((contactId - 1).mod(contactAvatarPalettes.size.toLong())).toInt()
-  return contactAvatarPalettes[index]
 }
 
 @Preview(showBackground = true)

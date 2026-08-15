@@ -30,7 +30,7 @@ A finance dashboard combining summary cards, progress indicators, a bar chart, b
 
 ## Visual Identities
 
-- Contact List: bright cerulean, turquoise, tangerine, and sunflower
+- Contact List: a monochrome cerulean-blue system with neutral surfaces
 - Product Grid: crisp neutrals with eight vivid product colors
 - Product Detail: warm cream and graphite with deep navy and vermilion
 - Settings: calm forest green, earth teal, sand, and amber
