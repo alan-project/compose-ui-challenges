@@ -20,11 +20,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -42,139 +46,138 @@ import com.example.contactlist.theme.ContactListTheme
 
 @Composable
 fun ContactListRoute(
-  viewModel: ContactListViewModel,
-  modifier: Modifier = Modifier,
+    viewModel: ContactListViewModel,
+    modifier: Modifier = Modifier,
 ) {
-  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-  ContactListScreen(
-    contacts = uiState.contacts,
-    onFavoriteClick = viewModel::onFavoriteClick,
-    modifier = modifier,
-  )
+    ContactListScreen(
+        contacts = uiState.contacts,
+        onFavoriteClick = viewModel::onFavoriteClick,
+        modifier = modifier,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactListScreen(
-  contacts: List<Contact>,
-  onFavoriteClick: (Long) -> Unit,
-  modifier: Modifier = Modifier,
+    contacts: List<Contact>,
+    onFavoriteClick: (Long) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  Scaffold(
-    modifier = modifier.fillMaxSize(),
-    containerColor = MaterialTheme.colorScheme.background,
-    contentWindowInsets = WindowInsets.safeDrawing,
-    topBar = {
-      CenterAlignedTopAppBar(
-        colors =
-          TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            titleContentColor = MaterialTheme.colorScheme.primary,
-          ),
-        title = {
-          Text(
-            text = "Contacts",
-            fontWeight = FontWeight.Bold,
-          )
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = WindowInsets.safeDrawing,
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = "Contacts",
+                        fontWeight = FontWeight.Bold,
+                    )
+                },
+            )
         },
-      )
-    },
-  ) { innerPadding ->
-    LazyColumn(
-      modifier = Modifier.fillMaxSize().padding(innerPadding),
-      contentPadding = PaddingValues(vertical = 8.dp),
-    ) {
-      items(
-        items = contacts,
-        key = Contact::id,
-      ) { contact ->
-        ContactRow(
-          contact = contact,
-          onFavoriteClick = { onFavoriteClick(contact.id) },
-        )
-        HorizontalDivider(
-          modifier = Modifier.padding(start = 80.dp),
-          color = MaterialTheme.colorScheme.outlineVariant,
-        )
-      }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentPadding = PaddingValues(vertical = 8.dp),
+        ) {
+            items(
+                items = contacts,
+                key = Contact::id,
+            ) { contact ->
+                ContactRow(
+                    contact = contact,
+                    onFavoriteClick = { onFavoriteClick(contact.id) },
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(start = 80.dp),
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                )
+            }
+        }
     }
-  }
 }
 
 @Composable
 private fun ContactRow(
-  contact: Contact,
-  onFavoriteClick: () -> Unit,
-  modifier: Modifier = Modifier,
+    contact: Contact,
+    onFavoriteClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-  Row(
-    modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-    verticalAlignment = Alignment.CenterVertically,
-  ) {
-    Box(
-      modifier =
-        Modifier.size(48.dp)
-          .clip(CircleShape)
-          .background(MaterialTheme.colorScheme.primary),
-      contentAlignment = Alignment.Center,
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-      Text(
-        text = contact.name.firstOrNull()?.toString().orEmpty(),
-        color = MaterialTheme.colorScheme.onPrimary,
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
-      )
-    }
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = contact.name.firstOrNull()?.toString().orEmpty(),
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+        }
 
-    Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
-    Column(
-      modifier = Modifier.weight(1f),
-      verticalArrangement = Arrangement.spacedBy(2.dp),
-    ) {
-      Text(
-        text = contact.name,
-        style = MaterialTheme.typography.bodyLarge,
-        fontWeight = FontWeight.SemiBold,
-      )
-      Text(
-        text = contact.phoneNumber,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        style = MaterialTheme.typography.bodyMedium,
-      )
-    }
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = contact.name,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                text = contact.phoneNumber,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
 
-    val favoriteAction = if (contact.isFavorite) "Remove from favorites" else "Add to favorites"
-    IconButton(
-      onClick = onFavoriteClick,
-      modifier =
-        Modifier
-          .size(48.dp)
-          .semantics { contentDescription = "$favoriteAction: ${contact.name}" },
-    ) {
-      Text(
-        text = if (contact.isFavorite) "★" else "☆",
-        color =
-          if (contact.isFavorite) {
-            MaterialTheme.colorScheme.primary
-          } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-          },
-        style = MaterialTheme.typography.headlineSmall,
-        fontWeight = FontWeight.Black,
-      )
+        IconButton(
+            onClick = onFavoriteClick,
+            modifier = Modifier
+                .size(48.dp)
+                .semantics { contentDescription = "Add to favorites" },
+        ) {
+            Icon(
+                imageVector = if (contact.isFavorite) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                contentDescription = null,
+                tint = if (contact.isFavorite) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+            )
+        }
     }
-  }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun ContactListScreenPreview() {
-  ContactListTheme {
-    ContactListScreen(
-      contacts = MockContacts.items,
-      onFavoriteClick = {},
-    )
-  }
+    ContactListTheme {
+        ContactListScreen(
+            contacts = MockContacts.items,
+            onFavoriteClick = {},
+        )
+    }
 }
