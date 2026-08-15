@@ -1,4 +1,4 @@
-# Level 2 — State and Input
+# Level 2 — State and Input Challenges
 
 Level 2 moves from drawing static Compose layouts to coordinating multiple pieces of screen state. Every project is a standalone Android app with a single screen, an MVVM presentation layer, and an in-memory repository.
 
@@ -7,7 +7,7 @@ Level 2 moves from drawing static Compose layouts to coordinating multiple piece
 - `exercise` contains the complete project, mock data, repository, theme, and image assets. The screen route and ViewModel are intentionally left as small compile-ready starting points.
 - `solution` contains the finished UI, ViewModel, and interactions.
 
-Switching branches changes every exercise in this repository at the same time. Commit or stash your work before switching.
+Switching branches changes every challenge in this repository at the same time. Commit or stash your work before switching.
 
 ## Projects
 
@@ -15,7 +15,7 @@ Switching branches changes every exercise in this repository at the same time. C
 
 Build a polished cart where users can select products, change quantities, remove and restore an item, and see totals update automatically.
 
-Practice:
+Challenge focus:
 
 - Derived UI state
 - List item events
@@ -27,7 +27,7 @@ Practice:
 
 Build a checkout form with a swipeable hero, validation, shipping and payment choices, a calculated total, and an order confirmation dialog.
 
-Practice:
+Challenge focus:
 
 - Text input and validation
 - Pager state and horizontal gestures
@@ -40,7 +40,7 @@ Practice:
 
 Build a dark, image-led music player with playback controls, seeking, repeat and shuffle modes, and a queue bottom sheet.
 
-Practice:
+Challenge focus:
 
 - Time-based state updates
 - Slider state
@@ -50,7 +50,6 @@ Practice:
 
 ## Shared Constraints
 
-- English UI and identifiers
 - One screen per project
 - MVVM only
 - In-memory mock data
