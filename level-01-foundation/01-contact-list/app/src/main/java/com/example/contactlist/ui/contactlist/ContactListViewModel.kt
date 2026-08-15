@@ -21,8 +21,8 @@ class ContactListViewModel(
       .map(::ContactListUiState)
       .stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = ContactListUiState(contactRepository.contacts.value),
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = ContactListUiState(),
       )
 
   fun onFavoriteClick(contactId: Long) {
