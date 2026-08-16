@@ -1,7 +1,6 @@
 package com.example.productgrid.data.mock
 
 import com.example.productgrid.data.model.Product
-import com.example.productgrid.data.model.ProductImage
 
 object MockProducts {
     val items = listOf(
@@ -14,7 +13,7 @@ object MockProducts {
             1_842,
             20,
             true,
-            ProductImage.HEADPHONES
+            productImageUrl("headphones", 1)
         ),
         Product(
             2,
@@ -25,7 +24,7 @@ object MockProducts {
             924,
             15,
             false,
-            ProductImage.KEYBOARD
+            productImageUrl("mechanical-keyboard", 2)
         ),
         Product(
             3,
@@ -36,7 +35,7 @@ object MockProducts {
             2_103,
             10,
             false,
-            ProductImage.SMARTWATCH
+            productImageUrl("smartwatch", 3)
         ),
         Product(
             4,
@@ -47,10 +46,18 @@ object MockProducts {
             1_276,
             0,
             true,
-            ProductImage.SPEAKER
+            productImageUrl("bluetooth-speaker", 4)
         ),
         Product(
-            5, "Compact Digital Camera", "Cameras", 599.99, 4.9, 638, 12, false, ProductImage.CAMERA
+            5,
+            "Compact Digital Camera",
+            "Cameras",
+            599.99,
+            4.9,
+            638,
+            12,
+            false,
+            productImageUrl("digital-camera", 5)
         ),
         Product(
             6,
@@ -61,7 +68,7 @@ object MockProducts {
             1_445,
             25,
             false,
-            ProductImage.MOUSE
+            productImageUrl("computer-mouse", 6)
         ),
         Product(
             7,
@@ -72,7 +79,7 @@ object MockProducts {
             3_017,
             0,
             true,
-            ProductImage.E_READER
+            productImageUrl("e-reader", 7)
         ),
         Product(
             8,
@@ -83,7 +90,7 @@ object MockProducts {
             782,
             18,
             false,
-            ProductImage.PROJECTOR
+            productImageUrl("projector", 8)
         ),
         Product(
             9,
@@ -94,7 +101,7 @@ object MockProducts {
             2_489,
             0,
             false,
-            ProductImage.CHARGING_HUB
+            productImageUrl("usb-charging-hub", 9)
         ),
         Product(
             10,
@@ -105,7 +112,7 @@ object MockProducts {
             867,
             20,
             true,
-            ProductImage.MICROPHONE
+            productImageUrl("podcast-microphone", 10)
         ),
         Product(
             11,
@@ -116,10 +123,18 @@ object MockProducts {
             1_125,
             10,
             false,
-            ProductImage.BACKPACK
+            productImageUrl("laptop-backpack", 11)
         ),
         Product(
-            12, "Smart LED Desk Lamp", "Home", 64.99, 4.4, 954, 0, false, ProductImage.DESK_LAMP
+            12,
+            "Smart LED Desk Lamp",
+            "Home",
+            64.99,
+            4.4,
+            954,
+            0,
+            false,
+            productImageUrl("desk-lamp", 12)
         ),
         Product(
             13,
@@ -130,7 +145,7 @@ object MockProducts {
             4_210,
             15,
             true,
-            ProductImage.TRAVEL_BOTTLE
+            productImageUrl("travel-bottle", 13)
         ),
         Product(
             14,
@@ -141,7 +156,7 @@ object MockProducts {
             731,
             0,
             false,
-            ProductImage.PHOTO_PRINTER
+            productImageUrl("photo-printer", 14)
         ),
         Product(
             15,
@@ -152,7 +167,7 @@ object MockProducts {
             1_608,
             20,
             false,
-            ProductImage.TABLET_STAND
+            productImageUrl("tablet-stand", 15)
         ),
         Product(
             16,
@@ -163,7 +178,7 @@ object MockProducts {
             1_018,
             12,
             false,
-            ProductImage.AIR_PURIFIER
+            productImageUrl("air-purifier", 16)
         ),
         Product(
             17,
@@ -174,13 +189,29 @@ object MockProducts {
             2_642,
             0,
             true,
-            ProductImage.HANDHELD_CONSOLE
+            productImageUrl("handheld-game-console", 17)
         ),
         Product(
-            18, "Cordless Mini Vacuum", "Home", 84.99, 4.2, 689, 15, false, ProductImage.MINI_VACUUM
+            18,
+            "Cordless Mini Vacuum",
+            "Home",
+            84.99,
+            4.2,
+            689,
+            15,
+            false,
+            productImageUrl("mini-vacuum", 18)
         ),
         Product(
-            19, "Premium Yoga Mat", "Fitness", 59.99, 4.8, 1_893, 0, false, ProductImage.YOGA_MAT
+            19,
+            "Premium Yoga Mat",
+            "Fitness",
+            59.99,
+            4.8,
+            1_893,
+            0,
+            false,
+            productImageUrl("yoga-mat", 19)
         ),
         Product(
             20,
@@ -191,7 +222,7 @@ object MockProducts {
             1_304,
             20,
             true,
-            ProductImage.COFFEE_GRINDER
+            productImageUrl("coffee-grinder", 20)
         ),
         Product(
             21,
@@ -202,7 +233,7 @@ object MockProducts {
             2_276,
             10,
             false,
-            ProductImage.CHARGING_PAD
+            productImageUrl("wireless-charging-pad", 21)
         ),
         Product(
             22,
@@ -213,10 +244,18 @@ object MockProducts {
             3_402,
             0,
             false,
-            ProductImage.KITCHEN_SCALE
+            productImageUrl("kitchen-scale", 22)
         ),
         Product(
-            23, "Modern Alarm Clock", "Home", 44.99, 4.3, 817, 15, false, ProductImage.ALARM_CLOCK
+            23,
+            "Modern Alarm Clock",
+            "Home",
+            44.99,
+            4.3,
+            817,
+            15,
+            false,
+            productImageUrl("alarm-clock", 23)
         ),
         Product(
             24,
@@ -227,7 +266,7 @@ object MockProducts {
             1_989,
             0,
             true,
-            ProductImage.TRAVEL_UMBRELLA
+            productImageUrl("travel-umbrella", 24)
         ),
         Product(
             25,
@@ -238,7 +277,7 @@ object MockProducts {
             576,
             18,
             false,
-            ProductImage.BINOCULARS
+            productImageUrl("binoculars", 25)
         ),
         Product(
             26,
@@ -249,10 +288,18 @@ object MockProducts {
             948,
             20,
             false,
-            ProductImage.COOKWARE
+            productImageUrl("cookware", 26)
         ),
         Product(
-            27, "Desktop Plant Pot", "Home", 24.99, 4.7, 1_512, 0, false, ProductImage.PLANT_POT
+            27,
+            "Desktop Plant Pot",
+            "Home",
+            24.99,
+            4.7,
+            1_512,
+            0,
+            false,
+            productImageUrl("plant-pot", 27)
         ),
         Product(
             28,
@@ -263,7 +310,7 @@ object MockProducts {
             2_018,
             15,
             true,
-            ProductImage.RUNNING_SHOES
+            productImageUrl("running-shoes", 28)
         ),
         Product(
             29,
@@ -274,7 +321,7 @@ object MockProducts {
             1_047,
             0,
             false,
-            ProductImage.SUNGLASSES
+            productImageUrl("sunglasses", 29)
         ),
         Product(
             30,
@@ -285,7 +332,11 @@ object MockProducts {
             1_386,
             10,
             false,
-            ProductImage.TRAVEL_CASE
+            productImageUrl("travel-suitcase", 30)
         ),
     )
+
+    // No API key is required. lock keeps each mock product image stable between requests.
+    private fun productImageUrl(keyword: String, lock: Int): String =
+        "https://loremflickr.com/640/640/$keyword?lock=$lock"
 }
