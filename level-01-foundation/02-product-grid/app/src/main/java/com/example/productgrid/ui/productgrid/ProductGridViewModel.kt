@@ -4,6 +4,5 @@ import androidx.lifecycle.ViewModel
 import com.example.productgrid.data.repository.ProductRepository
 
 class ProductGridViewModel(
-  private val productRepository: ProductRepository,
-) : ViewModel() {
-}
+    private val productRepository: ProductRepository,
+) : ViewModel()

@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ProductGridRoute(
-  viewModel: ProductGridViewModel,
-  modifier: Modifier = Modifier,
+    viewModel: ProductGridViewModel,
+    modifier: Modifier = Modifier,
 ) {
 }
