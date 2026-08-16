@@ -48,6 +48,16 @@ Challenge focus:
 - Modal bottom sheets
 - Accessibility descriptions
 
+### 04 — Product Detail
+
+Build a realistic product page with selectable colors, sizes, quantity controls, and a persistent purchase action.
+
+Challenge focus:
+
+- Scrollable detail content and fixed bottom actions
+- Radio-style product choices and quantity controls
+- State hoisting and derived purchase state
+
 ## Shared Constraints
 
 - One screen per project

@@ -6,70 +6,68 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val LightColorScheme =
-  lightColorScheme(
-    primary = Forest,
-    onPrimary = OnForest,
-    primaryContainer = ForestContainer,
-    onPrimaryContainer = OnForestContainer,
-    secondary = EarthTeal,
-    onSecondary = OnEarthTeal,
-    secondaryContainer = SageContainer,
-    onSecondaryContainer = OnSageContainer,
-    tertiary = Amber,
-    onTertiary = OnAmber,
-    tertiaryContainer = WarmSand,
-    onTertiaryContainer = OnWarmSand,
-    background = SandCanvas,
-    onBackground = EarthInk,
-    surface = CreamSurface,
-    onSurface = EarthInk,
-    surfaceVariant = EarthSurfaceVariant,
-    onSurfaceVariant = EarthMutedInk,
-    outline = EarthOutline,
-    outlineVariant = EarthOutlineVariant,
+private val LightColorScheme = lightColorScheme(
+    primary = Orange,
+    onPrimary = OnOrange,
+    primaryContainer = OrangeContainer,
+    onPrimaryContainer = OnOrangeContainer,
+    secondary = Cinnamon,
+    onSecondary = OnCinnamon,
+    secondaryContainer = CinnamonContainer,
+    onSecondaryContainer = OnCinnamonContainer,
+    tertiary = WarmGold,
+    onTertiary = OnWarmGold,
+    tertiaryContainer = WarmGoldContainer,
+    onTertiaryContainer = OnWarmGoldContainer,
+    background = WarmCanvas,
+    onBackground = WarmInk,
+    surface = WarmSurface,
+    onSurface = WarmInk,
+    surfaceVariant = WarmSurfaceVariant,
+    onSurfaceVariant = WarmMutedInk,
+    outline = WarmOutline,
+    outlineVariant = WarmOutlineVariant,
     error = SettingsError,
-    onError = CreamSurface,
+    onError = WarmSurface,
     errorContainer = SettingsErrorContainer,
     onErrorContainer = SettingsOnErrorContainer,
-  )
+)
 
-private val DarkColorScheme =
-  darkColorScheme(
-    primary = ForestLight,
-    onPrimary = OnForestLight,
-    primaryContainer = DeepForest,
-    onPrimaryContainer = OnDeepForest,
-    secondary = TealLight,
-    onSecondary = OnTealLight,
-    secondaryContainer = DeepTeal,
-    onSecondaryContainer = OnDeepTeal,
-    tertiary = AmberLight,
-    onTertiary = OnAmberLight,
-    tertiaryContainer = DeepAmber,
-    onTertiaryContainer = OnDeepAmber,
-    background = EarthNight,
-    onBackground = EarthNightText,
-    surface = EarthNightSurface,
-    onSurface = EarthNightText,
-    surfaceVariant = EarthNightElevated,
-    onSurfaceVariant = EarthNightMutedText,
-    outline = EarthNightOutline,
-    outlineVariant = EarthNightOutlineVariant,
+private val DarkColorScheme = darkColorScheme(
+    primary = OrangeLight,
+    onPrimary = OnOrangeLight,
+    primaryContainer = DeepOrange,
+    onPrimaryContainer = OnDeepOrange,
+    secondary = CinnamonLight,
+    onSecondary = OnCinnamonLight,
+    secondaryContainer = DeepCinnamon,
+    onSecondaryContainer = OnDeepCinnamon,
+    tertiary = WarmGoldLight,
+    onTertiary = OnWarmGoldLight,
+    tertiaryContainer = DeepGold,
+    onTertiaryContainer = OnDeepGold,
+    background = CoffeeNight,
+    onBackground = CoffeeText,
+    surface = CoffeeSurface,
+    onSurface = CoffeeText,
+    surfaceVariant = CoffeeElevated,
+    onSurfaceVariant = CoffeeMutedText,
+    outline = CoffeeOutline,
+    outlineVariant = CoffeeOutlineVariant,
     error = SettingsDarkError,
     onError = SettingsDarkOnError,
     errorContainer = SettingsDarkErrorContainer,
     onErrorContainer = SettingsDarkOnErrorContainer,
-  )
+)
 
 @Composable
 fun SettingsTheme(
-  darkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable () -> Unit,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
 ) {
-  MaterialTheme(
-    colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
-    typography = Typography,
-    content = content,
-  )
+    MaterialTheme(
+        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+        typography = Typography,
+        content = content,
+    )
 }

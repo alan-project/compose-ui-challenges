@@ -54,7 +54,7 @@ The starter and completed versions are not duplicated into separate folders. The
 
 ## Level 1 · Foundation
 
-Build confidence with Compose layout, reusable components, lists, grids, controls, imagery, and visual hierarchy.
+Build confidence with Compose layout, reusable components, lists, grids, controls, imagery, and visual hierarchy. The active path contains four focused challenges.
 
 <table>
   <tr>
@@ -86,27 +86,13 @@ Build confidence with Compose layout, reusable components, lists, grids, control
     </td>
   </tr>
   <tr>
-    <td width="34%" align="center"><img src="docs/screenshots/level-01/product-detail.webp" width="270" alt="Product Detail emulator screenshot"></td>
-    <td width="66%" valign="top">
-      <h3>03 · Product Detail</h3>
-      <p>Create an editorial product page with selection controls and a persistent purchase action.</p>
-      <strong>Challenge focus</strong>
-      <ul>
-        <li>Scrollable content with a fixed bottom action area</li>
-        <li>Selectable colors, sizes, and quantity controls</li>
-        <li>Large imagery, hierarchy, and state hoisting</li>
-      </ul>
-      <a href="level-01-foundation/03-product-detail">Open challenge</a>
-    </td>
-  </tr>
-  <tr>
     <td width="34%" align="center"><img src="docs/screenshots/level-01/settings.webp" width="270" alt="Settings emulator screenshot"></td>
     <td width="66%" valign="top">
       <h3>04 · Settings</h3>
       <p>Organize a settings screen with distinct sections and Material controls.</p>
       <strong>Challenge focus</strong>
       <ul>
-        <li><code>Switch</code>, filter chips, and slider composition</li>
+        <li><code>Switch</code>, <code>Checkbox</code>, radio choices, and slider composition</li>
         <li>Grouped settings rows and mixed surface styles</li>
         <li>Callbacks and state-driven control values</li>
       </ul>
@@ -125,20 +111,6 @@ Build confidence with Compose layout, reusable components, lists, grids, control
         <li>Rich list cards with photography and metadata</li>
       </ul>
       <a href="level-01-foundation/05-search-and-filter">Open challenge</a>
-    </td>
-  </tr>
-  <tr>
-    <td width="34%" align="center"><img src="docs/screenshots/level-01/dashboard.webp" width="270" alt="Dashboard emulator screenshot"></td>
-    <td width="66%" valign="top">
-      <h3>06 · Dashboard</h3>
-      <p>Arrange dense financial information into a readable single-screen dashboard.</p>
-      <strong>Challenge focus</strong>
-      <ul>
-        <li>Summary cards and responsive row composition</li>
-        <li>Bar charts and progress indicators built with Compose</li>
-        <li>Data hierarchy, spacing, and reusable metric components</li>
-      </ul>
-      <a href="level-01-foundation/06-dashboard">Open challenge</a>
     </td>
   </tr>
 </table>
@@ -190,6 +162,20 @@ Move beyond static layouts into derived state, events, validated input, gestures
         <li>Modal bottom sheets and accessible media actions</li>
       </ul>
       <a href="level-02-state-and-input/03-media-player">Open challenge</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="34%" align="center"><img src="docs/screenshots/level-02/product-detail.webp" width="270" alt="Product Detail emulator screenshot"></td>
+    <td width="66%" valign="top">
+      <h3>04 · Product Detail</h3>
+      <p>Build a realistic product page with selection controls and a persistent purchase action.</p>
+      <strong>Challenge focus</strong>
+      <ul>
+        <li>Scrollable content with a fixed bottom action area</li>
+        <li>Radio-style product choices and quantity controls</li>
+        <li>State hoisting and derived purchase state</li>
+      </ul>
+      <a href="level-02-state-and-input/04-product-detail">Open challenge</a>
     </td>
   </tr>
 </table>
