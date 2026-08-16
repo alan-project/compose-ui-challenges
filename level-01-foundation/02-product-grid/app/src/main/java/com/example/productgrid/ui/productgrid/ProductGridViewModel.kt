@@ -10,22 +10,20 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 data class ProductGridUiState(
-  val products: List<Product> = emptyList(),
+    val products: List<Product> = emptyList(),
 )
 
 class ProductGridViewModel(
-  private val productRepository: ProductRepository,
+    private val productRepository: ProductRepository,
 ) : ViewModel() {
-  val uiState: StateFlow<ProductGridUiState> =
-    productRepository.products
-      .map(::ProductGridUiState)
-      .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = ProductGridUiState(productRepository.products.value),
-      )
+    val uiState: StateFlow<ProductGridUiState> =
+        productRepository.products.map(::ProductGridUiState).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ProductGridUiState(),
+        )
 
-  fun onFavoriteClick(productId: Long) {
-    productRepository.toggleFavorite(productId)
-  }
+    fun onFavoriteClick(productId: Long) {
+        productRepository.toggleFavorite(productId)
+    }
 }
