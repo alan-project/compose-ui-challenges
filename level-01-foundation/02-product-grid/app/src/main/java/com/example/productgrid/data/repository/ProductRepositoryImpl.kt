@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-// Mock repository backed by in-memory data for this Compose exercise.
 class ProductRepositoryImpl : ProductRepository {
     private val _products = MutableStateFlow(MockProducts.items)
 
