@@ -23,8 +23,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
@@ -415,8 +415,23 @@ private fun SectionTitle(title: String) {
     )
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Settings screen",
+    showBackground = true,
+    widthDp = 390,
+    heightDp = 844,
+)
 @Composable
 private fun SettingsScreenPreview() {
-    SettingsTheme { SettingsScreen(MockSettings.preferences, {}, {}, {}, {}, {}, {}) }
+    SettingsTheme(darkTheme = false) {
+        SettingsScreen(
+            preferences = MockSettings.preferences,
+            onNotificationsChanged = {},
+            onBiometricChanged = {},
+            onBackgroundSyncChanged = {},
+            onImportantNotificationsOnlySelected = {},
+            onTextScaleChanged = {},
+            onThemeModeSelected = {},
+        )
+    }
 }
