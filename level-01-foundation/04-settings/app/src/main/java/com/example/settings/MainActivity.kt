@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.settings.data.repository.InMemorySettingsRepository
+import com.example.settings.data.repository.SettingsRepositoryImpl
 import com.example.settings.theme.SettingsTheme
 import com.example.settings.ui.settings.SettingsRoute
 import com.example.settings.ui.settings.SettingsViewModel
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         ) {
           val viewModel =
             viewModel<SettingsViewModel> {
-              SettingsViewModel(InMemorySettingsRepository())
+              SettingsViewModel(SettingsRepositoryImpl())
             }
 
           SettingsRoute(viewModel = viewModel)

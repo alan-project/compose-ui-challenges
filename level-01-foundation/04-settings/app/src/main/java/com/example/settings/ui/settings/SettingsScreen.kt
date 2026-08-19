@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun SettingsRoute(
-  viewModel: SettingsViewModel,
-  modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel,
+    modifier: Modifier = Modifier,
 ) {
 }

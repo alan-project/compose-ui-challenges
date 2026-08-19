@@ -4,6 +4,5 @@ import androidx.lifecycle.ViewModel
 import com.example.settings.data.repository.SettingsRepository
 
 class SettingsViewModel(
-  private val settingsRepository: SettingsRepository,
-) : ViewModel() {
-}
+    private val settingsRepository: SettingsRepository,
+) : ViewModel() {}
