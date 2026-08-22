@@ -33,8 +33,8 @@ class RecipeViewModel(
       }
       .stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = RecipeUiState(recipes = recipeRepository.recipes.value),
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = RecipeUiState(),
       )
 
   fun onQueryChanged(value: String) {

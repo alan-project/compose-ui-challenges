@@ -19,7 +19,7 @@ class SettingsViewModel(
     val uiState: StateFlow<SettingsUiState> =
         settingsRepository.preferences.map(::SettingsUiState).stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = SettingsUiState(MockSettings.preferences),
         )
 
