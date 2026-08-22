@@ -3,6 +3,28 @@ package com.example.recipe.data.mock
 import com.example.recipe.data.model.Recipe
 
 object MockRecipes {
+  // Curated Unsplash CDN images keep each mock recipe deterministic and relevant.
+  private val RecipeImageIds = mapOf(
+    "avocado-toast" to "https://images.unsplash.com/photo-1482049016688-2d3e1b311543",
+    "tomato-pasta" to "https://images.unsplash.com/photo-1473093295043-cdd812d0e601",
+    "berry-yogurt-bowl" to "https://images.unsplash.com/photo-1498837167922-ddd27525d352",
+    "grilled-salmon" to "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
+    "mushroom-risotto" to "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af",
+    "blueberry-pancakes" to "https://images.unsplash.com/photo-1528712306091-ed0763094c98",
+    "salmon-power-bowl" to "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe",
+    "mushroom-rice" to "https://images.unsplash.com/photo-1551218808-94e220e084d2",
+    "berry-oats" to "https://images.unsplash.com/photo-1512621776951-a57141f2eefd",
+    "avocado-plate" to "https://images.unsplash.com/photo-1490645935967-10de6ba17061",
+    "tomato-penne" to "https://images.unsplash.com/photo-1563379926898-05f4575a45d8",
+    "blueberry-brunch" to "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0",
+    "salmon-salad" to "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+    "mushroom-bowl" to "https://images.unsplash.com/photo-1505577058444-a3dab90d4253",
+    "berry-parfait" to "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f",
+    "spicy-avocado-toast" to "https://images.unsplash.com/photo-1453614512568-c4024d13c247",
+    "roasted-tomato-pasta" to "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+    "protein-pancakes" to "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7",
+  )
+
   val items =
     listOf(
       Recipe(1, "Avocado Toast with Poached Egg", "Breakfast", 15, 4.8, 410, recipeImageUrl("avocado-toast", 1), true),
@@ -25,7 +47,6 @@ object MockRecipes {
       Recipe(18, "Protein Blueberry Pancakes", "Healthy", 24, 4.5, 460, recipeImageUrl("protein-pancakes", 18)),
     )
 
-  // No API key is required. lock keeps each mock recipe image stable between requests.
   private fun recipeImageUrl(keyword: String, lock: Int): String =
-    "https://loremflickr.com/640/640/$keyword?lock=$lock"
+    "${RecipeImageIds.getValue(keyword)}?auto=format&fit=crop&w=640&q=80&sig=$lock"
 }

@@ -3,6 +3,40 @@ package com.example.composemarket.data.mock
 import com.example.composemarket.data.model.Product
 
 object MockProducts {
+    // Curated Unsplash CDN images keep each mock product deterministic and relevant.
+    private val ProductImageIds = mapOf(
+        "headphones" to "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+        "mechanical-keyboard" to "https://images.unsplash.com/photo-1587829741301-dc798b83add3",
+        "smartwatch" to "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+        "bluetooth-speaker" to "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1",
+        "digital-camera" to "https://images.unsplash.com/photo-1516035069371-29a1b244cc32",
+        "computer-mouse" to "https://images.unsplash.com/photo-1527814050087-3793815479db",
+        "e-reader" to "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0",
+        "projector" to "https://images.unsplash.com/photo-1535016120720-40c646be5580",
+        "usb-charging-hub" to "https://images.unsplash.com/photo-1625842268584-8f3296236761",
+        "podcast-microphone" to "https://images.unsplash.com/photo-1590602847861-f357a9332bbc",
+        "laptop-backpack" to "https://images.unsplash.com/photo-1553062407-98eeb64c6a62",
+        "desk-lamp" to "https://images.unsplash.com/photo-1507473885765-e6ed057f782c",
+        "travel-bottle" to "https://images.unsplash.com/photo-1602143407151-7111542de6e8",
+        "photo-printer" to "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a",
+        "tablet-stand" to "https://images.unsplash.com/photo-1561154464-82e9adf32764",
+        "air-purifier" to "https://images.unsplash.com/photo-1581578731548-c64695cc6952",
+        "handheld-game-console" to "https://images.unsplash.com/photo-1592840496694-26d035b52b48",
+        "mini-vacuum" to "https://images.unsplash.com/photo-1558317374-067fb5f30001",
+        "yoga-mat" to "https://images.unsplash.com/photo-1599447421416-3414500d18a5",
+        "coffee-grinder" to "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
+        "wireless-charging-pad" to "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+        "kitchen-scale" to "https://images.unsplash.com/photo-1556911220-bff31c812dba",
+        "alarm-clock" to "https://images.unsplash.com/photo-1508057198894-247b23fe5ade",
+        "travel-umbrella" to "https://images.unsplash.com/photo-1512428559087-560fa5ceab42",
+        "binoculars" to "https://images.unsplash.com/photo-1533130061792-64b345e4a833",
+        "cookware" to "https://images.unsplash.com/photo-1556910103-1c02745aae4d",
+        "plant-pot" to "https://images.unsplash.com/photo-1485955900006-10f4d324d411",
+        "running-shoes" to "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+        "sunglasses" to "https://images.unsplash.com/photo-1572635196237-14b3f281503f",
+        "travel-suitcase" to "https://images.unsplash.com/photo-1553531384-cc64ac80f931",
+    )
+
     val items = listOf(
         Product(
             1,
@@ -288,7 +322,6 @@ object MockProducts {
         ),
     )
 
-    // No API key is required. lock keeps each mock product image stable between requests.
     private fun productImageUrl(keyword: String, lock: Int): String =
-        "https://loremflickr.com/640/640/$keyword?lock=$lock"
+        "${ProductImageIds.getValue(keyword)}?auto=format&fit=crop&w=640&q=80&sig=$lock"
 }
