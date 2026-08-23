@@ -21,7 +21,7 @@ Four focused screens, in a deliberately sensible order:
 <img src="docs/contact.png" alt="Contact List demo" width="100%">
 </td>
 <td width="58%" valign="top">
-<h3>1. Contact List</h3>
+<h3><a href="level-01-foundation/contact-list">1. Contact List</a></h3>
 <p>Build a clean, scrollable contact directory with reusable rows, stable keys, and favorite actions.</p>
 <strong>What you’ll practice</strong>
 <ul>
@@ -36,7 +36,7 @@ Four focused screens, in a deliberately sensible order:
 <img src="docs/market.png" alt="Compose Market demo" width="100%">
 </td>
 <td width="58%" valign="top">
-<h3>2. Compose Market</h3>
+<h3><a href="level-01-foundation/compose-market">2. Compose Market</a></h3>
 <p>Compose a colorful product grid with real product imagery, ratings, discounts, prices, and favorite states.</p>
 <strong>What you’ll practice</strong>
 <ul>
@@ -51,7 +51,7 @@ Four focused screens, in a deliberately sensible order:
 <img src="docs/recipe.png" alt="Recipe demo" width="100%">
 </td>
 <td width="58%" valign="top">
-<h3>3. Recipe</h3>
+<h3><a href="level-01-foundation/recipe">3. Recipe</a></h3>
 <p>Build a recipe search screen with category chips, derived filtering, rich cards, remote images, and favorite actions.</p>
 <strong>What you’ll practice</strong>
 <ul>
@@ -66,7 +66,7 @@ Four focused screens, in a deliberately sensible order:
 <img src="docs/settings.png" alt="Settings demo" width="100%">
 </td>
 <td width="58%" valign="top">
-<h3>4. Settings</h3>
+<h3><a href="level-01-foundation/settings">4. Settings</a></h3>
 <p>Organize switches, checkboxes, radio choices, theme selection, and text-size controls into a polished settings screen.</p>
 <strong>What you’ll practice</strong>
 <ul>
