@@ -31,7 +31,7 @@ Four focused screens, in a deliberately sensible order:
 </tr>
 <tr>
 <td width="42%" valign="top" align="center">
-<video src="docs/market.mp4" controls muted loop width="100%"></video>
+<a href="docs/market.mp4"><img src="docs/market.gif" alt="Compose Market demo" width="100%"></a>
 <p><a href="docs/market.mp4">Open MP4 demo</a></p>
 </td>
 <td width="58%" valign="top">
