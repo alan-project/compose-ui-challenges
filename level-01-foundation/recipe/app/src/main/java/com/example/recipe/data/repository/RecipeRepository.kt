@@ -4,7 +4,7 @@ import com.example.recipe.data.model.Recipe
 import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository {
-  val recipes: Flow<List<Recipe>>
+    val recipes: Flow<List<Recipe>>
 
-  fun toggleFavorite(recipeId: Long)
+    fun toggleFavorite(recipeId: Long)
 }

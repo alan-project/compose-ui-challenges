@@ -8,19 +8,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class RecipeRepositoryImpl : RecipeRepository {
-  private val _recipes = MutableStateFlow(MockRecipes.items)
+    private val _recipes = MutableStateFlow(MockRecipes.items)
 
-  override val recipes: Flow<List<Recipe>> = _recipes.asStateFlow()
+    override val recipes: Flow<List<Recipe>> = _recipes.asStateFlow()
 
-  override fun toggleFavorite(recipeId: Long) {
-    _recipes.update { recipes ->
-      recipes.map { recipe ->
-        if (recipe.id == recipeId) {
-          recipe.copy(isFavorite = !recipe.isFavorite)
-        } else {
-          recipe
+    override fun toggleFavorite(recipeId: Long) {
+        _recipes.update { recipes ->
+            recipes.map { recipe ->
+                if (recipe.id == recipeId) {
+                    recipe.copy(isFavorite = !recipe.isFavorite)
+                } else {
+                    recipe
+                }
+            }
         }
-      }
     }
-  }
 }

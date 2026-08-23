@@ -15,24 +15,23 @@ import com.example.recipe.ui.recipe.RecipeRoute
 import com.example.recipe.ui.recipe.RecipeViewModel
 
 class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    enableEdgeToEdge()
-    setContent {
-      RecipeTheme {
-        Surface(
-          modifier = Modifier.fillMaxSize(),
-          color = MaterialTheme.colorScheme.background,
-        ) {
-          val viewModel =
-            viewModel<RecipeViewModel> {
-              RecipeViewModel(RecipeRepositoryImpl())
+        enableEdgeToEdge()
+        setContent {
+            RecipeTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background,
+                ) {
+                    val viewModel = viewModel<RecipeViewModel> {
+                        RecipeViewModel(RecipeRepositoryImpl())
+                    }
+
+                    RecipeRoute(viewModel = viewModel)
+                }
             }
-
-          RecipeRoute(viewModel = viewModel)
         }
-      }
     }
-  }
 }

@@ -7,8 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val LightColorScheme =
-  lightColorScheme(
+private val LightColorScheme = lightColorScheme(
     primary = Basil,
     onPrimary = OnBasil,
     primaryContainer = BasilContainer,
@@ -43,10 +42,9 @@ private val LightColorScheme =
     surfaceContainer = Color(0xFFF7F0E7),
     surfaceContainerHigh = Color(0xFFF0E9DF),
     surfaceContainerHighest = Color(0xFFEAE2D8),
-  )
+)
 
-private val DarkColorScheme =
-  darkColorScheme(
+private val DarkColorScheme = darkColorScheme(
     primary = BasilLight,
     onPrimary = OnBasilLight,
     primaryContainer = BasilContainerDark,
@@ -81,16 +79,16 @@ private val DarkColorScheme =
     surfaceContainer = Color(0xFF211D19),
     surfaceContainerHigh = Color(0xFF2B2722),
     surfaceContainerHighest = Color(0xFF36312B),
-  )
+)
 
 @Composable
 fun RecipeTheme(
-  darkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable () -> Unit,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
 ) {
-  MaterialTheme(
-    colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
-    typography = Typography,
-    content = content,
-  )
+    MaterialTheme(
+        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+        typography = Typography,
+        content = content,
+    )
 }
