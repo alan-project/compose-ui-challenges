@@ -31,7 +31,7 @@ Four focused screens, in a deliberately sensible order:
 </tr>
 <tr>
 <td width="42%" valign="top" align="center">
-<a href="docs/market.mp4"><img src="docs/market.gif" alt="Compose Market demo" width="100%"></a>
+<img src="docs/market.png" alt="Compose Market demo" width="100%">
 </td>
 <td width="58%" valign="top">
 <h3>2. Compose Market</h3>
@@ -46,7 +46,7 @@ Four focused screens, in a deliberately sensible order:
 </tr>
 <tr>
 <td width="42%" valign="top" align="center">
-<a href="docs/recipe.mp4"><img src="docs/recipe.gif" alt="Recipe demo" width="100%"></a>
+<img src="docs/recipe.png" alt="Recipe demo" width="100%">
 </td>
 <td width="58%" valign="top">
 <h3>3. Recipe</h3>
@@ -61,7 +61,7 @@ Four focused screens, in a deliberately sensible order:
 </tr>
 <tr>
 <td width="42%" valign="top" align="center">
-<a href="docs/settings.mp4"><img src="docs/settings.gif" alt="Settings demo" width="100%"></a>
+<img src="docs/settings.png" alt="Settings demo" width="100%">
 </td>
 <td width="58%" valign="top">
 <h3>4. Settings</h3>
