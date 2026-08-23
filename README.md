@@ -32,7 +32,6 @@ Four focused screens, in a deliberately sensible order:
 <tr>
 <td width="42%" valign="top" align="center">
 <a href="docs/market.mp4"><img src="docs/market.gif" alt="Compose Market demo" width="100%"></a>
-<p><a href="docs/market.mp4">Open MP4 demo</a></p>
 </td>
 <td width="58%" valign="top">
 <h3>2. Compose Market</h3>
