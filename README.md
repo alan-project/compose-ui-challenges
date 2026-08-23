@@ -4,6 +4,8 @@ Build Jetpack Compose screens one small challenge at a time.
 
 The data layer is already wired: models, mock data, repositories, themes, assets, and app setup are ready. Your job is the UI. Vibe coding can make a screen appear quickly, but it cannot make you understand what you built. Try each challenge once yourself—the extra typing is where Compose starts to make sense.
 
+The solution is not the only right answer. Use it as a reference, then build each screen in your own way.
+
 There are two branches:
 
 - `exercise` — the UI starting point
@@ -75,7 +77,3 @@ Four focused screens, in a deliberately sensible order:
 </td>
 </tr>
 </table>
-
-## A small rule
-
-Pick a project, build the screen, and peek at `solution` when you get stuck. Let AI help with the boring parts, then read the result and make it yours. Compose becomes much less intimidating after you have typed it with your own keyboard.
