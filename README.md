@@ -46,8 +46,7 @@ Four focused screens, in a deliberately sensible order:
 </tr>
 <tr>
 <td width="42%" valign="top" align="center">
-<video src="docs/recipe.mp4" controls muted loop width="100%"></video>
-<p><a href="docs/recipe.mp4">Open MP4 demo</a></p>
+<a href="docs/recipe.mp4"><img src="docs/recipe.gif" alt="Recipe demo" width="100%"></a>
 </td>
 <td width="58%" valign="top">
 <h3>3. Recipe</h3>
@@ -62,8 +61,7 @@ Four focused screens, in a deliberately sensible order:
 </tr>
 <tr>
 <td width="42%" valign="top" align="center">
-<video src="docs/settings.mp4" controls muted loop width="100%"></video>
-<p><a href="docs/settings.mp4">Open MP4 demo</a></p>
+<a href="docs/settings.mp4"><img src="docs/settings.gif" alt="Settings demo" width="100%"></a>
 </td>
 <td width="58%" valign="top">
 <h3>4. Settings</h3>
