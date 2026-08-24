@@ -93,11 +93,11 @@ The screen can look good. Now it also has to remember what the user did.
 </td>
 <td width="58%" valign="top">
 <h3>1. Burger Builder</h3>
-<p>Build a realistic food-order flow for choosing a patty, vegetables, extras, quantity, and special instructions.</p>
+<p>Build a compact food-order customizer where vegetables and extras open their own focused option sheets.</p>
 <strong>What you’ll practice</strong>
 <ul>
 <li><code>rememberSaveable</code> for in-progress choices and text input</li>
-<li><code>ModalBottomSheet</code> with state hoisted above dismissible content</li>
+<li><code>ModalBottomSheet</code> for focused option pickers with state hoisted above them</li>
 </ul>
 <a href="level-02-state-and-input/burger-builder">Open challenge</a>
 </td>
