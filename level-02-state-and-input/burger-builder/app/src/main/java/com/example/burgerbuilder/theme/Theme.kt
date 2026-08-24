@@ -32,13 +32,13 @@ private val LightColorScheme =
     inverseSurface = Charcoal,
     inverseOnSurface = FryPaper,
     inversePrimary = DriveThruRedLight,
-    surfaceDim = Color(0xFFE8D7D1),
+    surfaceDim = Color(0xFFDEDEDE),
     surfaceBright = CounterWhite,
     surfaceContainerLowest = Color.White,
-    surfaceContainerLow = Color(0xFFFFF3EC),
-    surfaceContainer = Color(0xFFFBEDE7),
-    surfaceContainerHigh = Color(0xFFF5E7E1),
-    surfaceContainerHighest = Color(0xFFEFE1DB),
+    surfaceContainerLow = Color(0xFFFAFAFA),
+    surfaceContainer = Color(0xFFF5F5F5),
+    surfaceContainerHigh = Color(0xFFEFEFEF),
+    surfaceContainerHighest = Color(0xFFE7E7E7),
   )
 
 private val DarkColorScheme =
