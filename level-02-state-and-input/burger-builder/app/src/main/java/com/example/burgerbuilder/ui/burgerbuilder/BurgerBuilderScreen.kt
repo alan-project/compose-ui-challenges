@@ -67,6 +67,7 @@ import com.example.burgerbuilder.data.model.BurgerOption
 import com.example.burgerbuilder.data.model.calculateBurgerTotal
 import com.example.burgerbuilder.theme.BurgerBuilderTheme
 import java.util.Locale
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -439,7 +440,7 @@ private fun OptionCategoryRow(
 private fun OptionPickerSheet(
   title: String,
   subtitle: String,
-  options: List<BurgerOption>,
+  options: ImmutableList<BurgerOption>,
   selectedOptionCount: Int,
   isOptionSelected: (String) -> Boolean,
   onOptionToggle: (String) -> Unit,
@@ -677,7 +678,7 @@ private fun List<String>.toggled(optionId: String): List<String> =
   }
 
 private fun optionSummary(
-  options: List<BurgerOption>,
+  options: ImmutableList<BurgerOption>,
   selectedOptionIds: Collection<String>,
 ): String {
   val selectedNames =
