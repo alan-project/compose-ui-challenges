@@ -93,17 +93,15 @@ fun BurgerBuilderScreen(
   var isDoublePatty by rememberSaveable(burger.id) { mutableStateOf(false) }
   var selectedVegetableIds by
     rememberSaveable(burger.id) {
-      mutableStateOf(
-        ArrayList(
-          burger.vegetables
-            .filter(BurgerOption::selectedByDefault)
-            .map(BurgerOption::id),
-        ),
+      mutableStateOf<List<String>>(
+        burger.vegetables
+          .filter(BurgerOption::selectedByDefault)
+          .map(BurgerOption::id),
       )
     }
   var selectedExtraIds by
     rememberSaveable(burger.id) {
-      mutableStateOf(ArrayList<String>())
+      mutableStateOf<List<String>>(emptyList())
     }
   var quantity by rememberSaveable(burger.id) { mutableStateOf(1) }
   var specialInstructions by rememberSaveable(burger.id) { mutableStateOf("") }
@@ -668,9 +666,11 @@ private enum class CustomizerSheet {
   Extras,
 }
 
-private fun ArrayList<String>.toggled(optionId: String): ArrayList<String> =
-  ArrayList(this).apply {
-    if (!remove(optionId)) add(optionId)
+private fun List<String>.toggled(optionId: String): List<String> =
+  if (optionId in this) {
+    this - optionId
+  } else {
+    this + optionId
   }
 
 private fun optionSummary(
