@@ -81,3 +81,25 @@ Four focused screens, in a deliberately sensible order:
 </td>
 </tr>
 </table>
+
+## Level 2 — State & Input
+
+The screen can look good. Now it also has to remember what the user did.
+
+<table>
+<tr>
+<td width="42%" valign="top" align="center">
+<img src="docs/burger.png" alt="Burger Builder demo" width="100%">
+</td>
+<td width="58%" valign="top">
+<h3>1. Burger Builder</h3>
+<p>Build a realistic food-order flow for choosing a patty, vegetables, extras, quantity, and special instructions.</p>
+<strong>What you’ll practice</strong>
+<ul>
+<li><code>rememberSaveable</code> for in-progress choices and text input</li>
+<li><code>ModalBottomSheet</code> with state hoisted above dismissible content</li>
+</ul>
+<a href="level-02-state-and-input/burger-builder">Open challenge</a>
+</td>
+</tr>
+</table>
