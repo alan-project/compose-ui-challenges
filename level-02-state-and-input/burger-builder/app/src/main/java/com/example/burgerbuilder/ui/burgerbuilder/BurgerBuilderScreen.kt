@@ -29,8 +29,9 @@ fun BurgerBuilderScreen(
   burger: Burger,
   modifier: Modifier = Modifier,
 ) {
-  // TODO: Build the product page and open its options in a ModalBottomSheet.
-  // Keep in-progress selections with rememberSaveable above the sheet content.
+  // TODO: Build a customization screen with a compact burger image and order summary.
+  // Keep patty, quantity, and notes on the main screen. Open separate ModalBottomSheets
+  // for vegetables and extras, with rememberSaveable state owned above those sheets.
   Box(
     modifier = modifier.fillMaxSize(),
     contentAlignment = Alignment.Center,
