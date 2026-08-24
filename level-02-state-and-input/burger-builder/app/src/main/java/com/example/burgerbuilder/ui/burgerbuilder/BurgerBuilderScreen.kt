@@ -202,7 +202,7 @@ private fun BurgerCustomizationPage(
       TopAppBar(
         title = {
           Text(
-            text = "Customize burger",
+            text = "Order",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold,
           )
