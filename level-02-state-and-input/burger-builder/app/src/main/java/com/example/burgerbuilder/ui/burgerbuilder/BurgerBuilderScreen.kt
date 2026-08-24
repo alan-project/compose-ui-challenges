@@ -117,8 +117,8 @@ fun BurgerBuilderScreen(
   BurgerCustomizationPage(
     burger = burger,
     isDoublePatty = isDoublePatty,
-    selectedVegetableIds = selectedVegetableIds,
-    selectedExtraIds = selectedExtraIds,
+    vegetableSummary = optionSummary(burger.vegetables, selectedVegetableIds),
+    extraSummary = optionSummary(burger.extras, selectedExtraIds),
     quantity = quantity,
     specialInstructions = specialInstructions,
     totalPrice = totalPrice,
@@ -151,7 +151,8 @@ fun BurgerBuilderScreen(
             title = "Choose vegetables",
             subtitle = "Remove anything you do not want, or add some heat.",
             options = burger.vegetables,
-            selectedOptionIds = selectedVegetableIds,
+            selectedOptionCount = selectedVegetableIds.size,
+            isOptionSelected = { optionId -> optionId in selectedVegetableIds },
             onOptionToggle = { optionId ->
               selectedVegetableIds = selectedVegetableIds.toggled(optionId)
             },
@@ -163,7 +164,8 @@ fun BurgerBuilderScreen(
             title = "Add extras",
             subtitle = "A little extra cheddar has never hurt a burger.",
             options = burger.extras,
-            selectedOptionIds = selectedExtraIds,
+            selectedOptionCount = selectedExtraIds.size,
+            isOptionSelected = { optionId -> optionId in selectedExtraIds },
             onOptionToggle = { optionId ->
               selectedExtraIds = selectedExtraIds.toggled(optionId)
             },
@@ -179,8 +181,8 @@ fun BurgerBuilderScreen(
 private fun BurgerCustomizationPage(
   burger: Burger,
   isDoublePatty: Boolean,
-  selectedVegetableIds: Collection<String>,
-  selectedExtraIds: Collection<String>,
+  vegetableSummary: String,
+  extraSummary: String,
   quantity: Int,
   specialInstructions: String,
   totalPrice: Double,
@@ -279,13 +281,13 @@ private fun BurgerCustomizationPage(
       Column {
         OptionCategoryRow(
           title = "Vegetables",
-          summary = optionSummary(burger.vegetables, selectedVegetableIds),
+          summary = vegetableSummary,
           onClick = onVegetablesClick,
         )
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         OptionCategoryRow(
           title = "Extras",
-          summary = optionSummary(burger.extras, selectedExtraIds),
+          summary = extraSummary,
           onClick = onExtrasClick,
         )
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -438,7 +440,8 @@ private fun OptionPickerSheet(
   title: String,
   subtitle: String,
   options: List<BurgerOption>,
-  selectedOptionIds: Collection<String>,
+  selectedOptionCount: Int,
+  isOptionSelected: (String) -> Boolean,
   onOptionToggle: (String) -> Unit,
   onDone: () -> Unit,
 ) {
@@ -471,7 +474,7 @@ private fun OptionPickerSheet(
           } else {
             "+${formatPrice(option.additionalPrice)}"
           },
-        checked = option.id in selectedOptionIds,
+        checked = isOptionSelected(option.id),
         onClick = { onOptionToggle(option.id) },
       )
       if (index < options.lastIndex) {
@@ -496,7 +499,7 @@ private fun OptionPickerSheet(
       shape = RoundedCornerShape(6.dp),
     ) {
       Text(
-        text = "Done  •  ${selectedOptionIds.size} selected",
+        text = "Done  •  $selectedOptionCount selected",
         fontWeight = FontWeight.Bold,
       )
     }
