@@ -208,7 +208,8 @@ private fun BurgerCustomizationPage(
         },
         colors =
           TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
           ),
       )
     },
@@ -338,9 +339,10 @@ private fun CompactBurgerHeader(
     shape = RoundedCornerShape(22.dp),
     colors =
       CardDefaults.cardColors(
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
       ),
-    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
   ) {
     Row(
       modifier = Modifier.padding(12.dp),
@@ -368,7 +370,7 @@ private fun CompactBurgerHeader(
       ) {
         Text(
           text = "MADE TO ORDER",
-          color = MaterialTheme.colorScheme.secondary,
+          color = MaterialTheme.colorScheme.primary,
           style = MaterialTheme.typography.labelSmall,
           fontWeight = FontWeight.Bold,
         )
@@ -428,8 +430,8 @@ private fun PickerCard(
           )
           if (selectionCount > 0) {
             Surface(
-              color = MaterialTheme.colorScheme.primaryContainer,
-              contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+              color = MaterialTheme.colorScheme.secondaryContainer,
+              contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
               shape = CircleShape,
             ) {
               Text(
@@ -662,7 +664,7 @@ private fun QuantityButton(
         .clip(CircleShape)
         .background(
           if (enabled) {
-            MaterialTheme.colorScheme.primaryContainer
+            MaterialTheme.colorScheme.secondaryContainer
           } else {
             MaterialTheme.colorScheme.surfaceContainerHighest
           },
@@ -673,7 +675,7 @@ private fun QuantityButton(
       text = symbol,
       color =
         if (enabled) {
-          MaterialTheme.colorScheme.onPrimaryContainer
+          MaterialTheme.colorScheme.onSecondaryContainer
         } else {
           MaterialTheme.colorScheme.onSurfaceVariant
         },
