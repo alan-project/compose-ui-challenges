@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -56,6 +55,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -89,7 +89,7 @@ fun BurgerBuilderScreen(
   burger: Burger,
   modifier: Modifier = Modifier,
 ) {
-  var showCustomizer by remember { mutableStateOf(false) }
+  var activeSheet by remember { mutableStateOf<CustomizerSheet?>(null) }
 
   var isDoublePatty by rememberSaveable(burger.id) { mutableStateOf(false) }
   var selectedVegetableIds by
@@ -117,56 +117,81 @@ fun BurgerBuilderScreen(
       quantity = quantity,
     )
 
-  BurgerProductPage(
+  BurgerCustomizationPage(
     burger = burger,
+    isDoublePatty = isDoublePatty,
+    selectedVegetableIds = selectedVegetableIds,
+    selectedExtraIds = selectedExtraIds,
     quantity = quantity,
+    specialInstructions = specialInstructions,
     totalPrice = totalPrice,
-    onCustomizeClick = { showCustomizer = true },
+    onDoublePattyChange = { isDoublePatty = it },
+    onVegetablesClick = { activeSheet = CustomizerSheet.Vegetables },
+    onExtrasClick = { activeSheet = CustomizerSheet.Extras },
+    onQuantityChange = { quantity = it.coerceIn(1, 10) },
+    onSpecialInstructionsChange = { specialInstructions = it },
+    onAddToOrder = {},
     modifier = modifier,
   )
 
-  if (showCustomizer) {
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  activeSheet?.let { sheet ->
+    val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    val closeSheet: () -> Unit = {
+      scope.launch { sheetState.hide() }.invokeOnCompletion {
+        if (!sheetState.isVisible) activeSheet = null
+      }
+    }
 
     ModalBottomSheet(
-      onDismissRequest = { showCustomizer = false },
+      onDismissRequest = { activeSheet = null },
       sheetState = sheetState,
     ) {
-      BurgerCustomizer(
-        burger = burger,
-        isDoublePatty = isDoublePatty,
-        selectedVegetableIds = selectedVegetableIds,
-        selectedExtraIds = selectedExtraIds,
-        quantity = quantity,
-        specialInstructions = specialInstructions,
-        totalPrice = totalPrice,
-        onDoublePattyChange = { isDoublePatty = it },
-        onVegetableToggle = { optionId ->
-          selectedVegetableIds = selectedVegetableIds.toggled(optionId)
-        },
-        onExtraToggle = { optionId ->
-          selectedExtraIds = selectedExtraIds.toggled(optionId)
-        },
-        onQuantityChange = { quantity = it.coerceIn(1, 10) },
-        onSpecialInstructionsChange = { specialInstructions = it },
-        onAddToOrder = {
-          scope.launch { sheetState.hide() }.invokeOnCompletion {
-            if (!sheetState.isVisible) showCustomizer = false
-          }
-        },
-      )
+      when (sheet) {
+        CustomizerSheet.Vegetables ->
+          OptionPickerSheet(
+            title = "Choose vegetables",
+            subtitle = "Remove anything you do not want, or add some heat.",
+            options = burger.vegetables,
+            selectedOptionIds = selectedVegetableIds,
+            onOptionToggle = { optionId ->
+              selectedVegetableIds = selectedVegetableIds.toggled(optionId)
+            },
+            onDone = closeSheet,
+          )
+
+        CustomizerSheet.Extras ->
+          OptionPickerSheet(
+            title = "Add extras",
+            subtitle = "A little extra cheddar has never hurt a burger.",
+            options = burger.extras,
+            selectedOptionIds = selectedExtraIds,
+            onOptionToggle = { optionId ->
+              selectedExtraIds = selectedExtraIds.toggled(optionId)
+            },
+            onDone = closeSheet,
+          )
+      }
     }
   }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BurgerProductPage(
+private fun BurgerCustomizationPage(
   burger: Burger,
+  isDoublePatty: Boolean,
+  selectedVegetableIds: Collection<String>,
+  selectedExtraIds: Collection<String>,
   quantity: Int,
+  specialInstructions: String,
   totalPrice: Double,
-  onCustomizeClick: () -> Unit,
+  onDoublePattyChange: (Boolean) -> Unit,
+  onVegetablesClick: () -> Unit,
+  onExtrasClick: () -> Unit,
+  onQuantityChange: (Int) -> Unit,
+  onSpecialInstructionsChange: (String) -> Unit,
+  onAddToOrder: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Scaffold(
@@ -177,7 +202,7 @@ private fun BurgerProductPage(
       CenterAlignedTopAppBar(
         title = {
           Text(
-            text = "Burger Builder",
+            text = "Customize burger",
             fontWeight = FontWeight.Bold,
           )
         },
@@ -193,7 +218,7 @@ private fun BurgerProductPage(
         shadowElevation = 12.dp,
       ) {
         Button(
-          onClick = onCustomizeClick,
+          onClick = onAddToOrder,
           modifier =
             Modifier
               .fillMaxWidth()
@@ -203,7 +228,7 @@ private fun BurgerProductPage(
           shape = RoundedCornerShape(18.dp),
         ) {
           Text(
-            text = "Customize order  •  ${formatPrice(totalPrice)}",
+            text = "Add to order  •  ${formatPrice(totalPrice)}",
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
           )
@@ -216,7 +241,110 @@ private fun BurgerProductPage(
         Modifier
           .fillMaxSize()
           .padding(innerPadding)
-          .verticalScroll(rememberScrollState()),
+          .verticalScroll(rememberScrollState())
+          .imePadding()
+          .padding(horizontal = 20.dp, vertical = 12.dp),
+      verticalArrangement = Arrangement.spacedBy(18.dp),
+    ) {
+      CompactBurgerHeader(burger = burger)
+
+      Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        SectionTitle("Patty")
+        Card(
+          modifier = Modifier.fillMaxWidth(),
+          shape = RoundedCornerShape(18.dp),
+          colors =
+            CardDefaults.cardColors(
+              containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            ),
+          border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        ) {
+          RadioOptionRow(
+            label = "Single patty",
+            price = "Included",
+            selected = !isDoublePatty,
+            onClick = { onDoublePattyChange(false) },
+          )
+          HorizontalDivider(
+            modifier = Modifier.padding(start = 56.dp),
+            color = MaterialTheme.colorScheme.outlineVariant,
+          )
+          RadioOptionRow(
+            label = "Double patty",
+            price = "+${formatPrice(burger.doublePattyPrice)}",
+            selected = isDoublePatty,
+            onClick = { onDoublePattyChange(true) },
+          )
+        }
+      }
+
+      PickerCard(
+        title = "Vegetables",
+        summary = optionSummary(burger.vegetables, selectedVegetableIds),
+        selectionCount = selectedVegetableIds.size,
+        onClick = onVegetablesClick,
+      )
+
+      PickerCard(
+        title = "Extras",
+        summary = optionSummary(burger.extras, selectedExtraIds),
+        selectionCount = selectedExtraIds.size,
+        onClick = onExtrasClick,
+      )
+
+      Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        SectionTitle("Quantity")
+        Card(
+          modifier = Modifier.fillMaxWidth(),
+          shape = RoundedCornerShape(18.dp),
+          colors =
+            CardDefaults.cardColors(
+              containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            ),
+          border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        ) {
+          QuantityStepper(
+            quantity = quantity,
+            onQuantityChange = onQuantityChange,
+          )
+        }
+      }
+
+      Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        SectionTitle("Special instructions")
+        OutlinedTextField(
+          value = specialInstructions,
+          onValueChange = onSpecialInstructionsChange,
+          modifier = Modifier.fillMaxWidth(),
+          placeholder = { Text("Sauce on the side, no salt…") },
+          minLines = 2,
+          maxLines = 4,
+          shape = RoundedCornerShape(16.dp),
+        )
+      }
+
+      Spacer(Modifier.height(8.dp))
+    }
+  }
+}
+
+@Composable
+private fun CompactBurgerHeader(
+  burger: Burger,
+  modifier: Modifier = Modifier,
+) {
+  Card(
+    modifier = modifier.fillMaxWidth(),
+    shape = RoundedCornerShape(22.dp),
+    colors =
+      CardDefaults.cardColors(
+        containerColor = MaterialTheme.colorScheme.surface,
+      ),
+    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+  ) {
+    Row(
+      modifier = Modifier.padding(12.dp),
+      verticalAlignment = Alignment.CenterVertically,
     ) {
       AsyncImage(
         model =
@@ -227,66 +355,35 @@ private fun BurgerProductPage(
         contentDescription = burger.name,
         modifier =
           Modifier
-            .fillMaxWidth()
-            .aspectRatio(1.3f),
+            .size(112.dp)
+            .clip(RoundedCornerShape(16.dp)),
         placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceContainerHigh),
         error = ColorPainter(MaterialTheme.colorScheme.surfaceContainerHigh),
         contentScale = ContentScale.Crop,
       )
-
+      Spacer(Modifier.width(14.dp))
       Column(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 22.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
+        modifier = Modifier.weight(1f),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
       ) {
-        Surface(
-          color = MaterialTheme.colorScheme.secondaryContainer,
-          contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-          shape = RoundedCornerShape(50),
-        ) {
-          Text(
-            text = "MADE TO ORDER",
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Bold,
-          )
-        }
+        Text(
+          text = "MADE TO ORDER",
+          color = MaterialTheme.colorScheme.secondary,
+          style = MaterialTheme.typography.labelSmall,
+          fontWeight = FontWeight.Bold,
+        )
         Text(
           text = burger.name,
-          style = MaterialTheme.typography.headlineMedium,
+          style = MaterialTheme.typography.titleLarge,
           fontWeight = FontWeight.ExtraBold,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis,
         )
         Text(
-          text = burger.description,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-          style = MaterialTheme.typography.bodyLarge,
-        )
-        Row(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically,
-        ) {
-          Text(
-            text = "From ${formatPrice(burger.basePrice)}",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-          )
-          Surface(
-            color = MaterialTheme.colorScheme.surfaceContainer,
-            shape = RoundedCornerShape(12.dp),
-          ) {
-            Text(
-              text = if (quantity == 1) "1 burger" else "$quantity burgers",
-              modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-              style = MaterialTheme.typography.labelLarge,
-            )
-          }
-        }
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-        Text(
-          text = "Built fresh with cheddar, house sauce, vegetables, and a toasted brioche bun.",
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-          style = MaterialTheme.typography.bodyMedium,
+          text = "From ${formatPrice(burger.basePrice)}",
+          color = MaterialTheme.colorScheme.primary,
+          style = MaterialTheme.typography.titleMedium,
+          fontWeight = FontWeight.Bold,
         )
       }
     }
@@ -294,133 +391,17 @@ private fun BurgerProductPage(
 }
 
 @Composable
-private fun BurgerCustomizer(
-  burger: Burger,
-  isDoublePatty: Boolean,
-  selectedVegetableIds: Collection<String>,
-  selectedExtraIds: Collection<String>,
-  quantity: Int,
-  specialInstructions: String,
-  totalPrice: Double,
-  onDoublePattyChange: (Boolean) -> Unit,
-  onVegetableToggle: (String) -> Unit,
-  onExtraToggle: (String) -> Unit,
-  onQuantityChange: (Int) -> Unit,
-  onSpecialInstructionsChange: (String) -> Unit,
-  onAddToOrder: () -> Unit,
+private fun PickerCard(
+  title: String,
+  summary: String,
+  selectionCount: Int,
+  onClick: () -> Unit,
 ) {
-  Column(
+  Card(
     modifier =
       Modifier
         .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
-        .imePadding()
-        .padding(horizontal = 20.dp)
-        .padding(bottom = 24.dp),
-  ) {
-    Text(
-      text = "Customize your burger",
-      style = MaterialTheme.typography.headlineSmall,
-      fontWeight = FontWeight.ExtraBold,
-    )
-    Spacer(Modifier.height(6.dp))
-    Text(
-      text = burger.name,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-      style = MaterialTheme.typography.bodyLarge,
-    )
-
-    CustomizerSection(title = "Patty") {
-      RadioOptionRow(
-        label = "Single patty",
-        price = "Included",
-        selected = !isDoublePatty,
-        onClick = { onDoublePattyChange(false) },
-      )
-      RadioOptionRow(
-        label = "Double patty",
-        price = "+${formatPrice(burger.doublePattyPrice)}",
-        selected = isDoublePatty,
-        onClick = { onDoublePattyChange(true) },
-      )
-    }
-
-    CustomizerSection(title = "Vegetables") {
-      burger.vegetables.forEach { option ->
-        CheckboxOptionRow(
-          label = option.name,
-          price = "Free",
-          checked = option.id in selectedVegetableIds,
-          onClick = { onVegetableToggle(option.id) },
-        )
-      }
-    }
-
-    CustomizerSection(title = "Extras") {
-      burger.extras.forEach { option ->
-        CheckboxOptionRow(
-          label = option.name,
-          price = "+${formatPrice(option.additionalPrice)}",
-          checked = option.id in selectedExtraIds,
-          onClick = { onExtraToggle(option.id) },
-        )
-      }
-    }
-
-    CustomizerSection(title = "Quantity") {
-      QuantityStepper(
-        quantity = quantity,
-        onQuantityChange = onQuantityChange,
-      )
-    }
-
-    Text(
-      text = "Special instructions",
-      modifier = Modifier.padding(top = 24.dp, bottom = 10.dp),
-      style = MaterialTheme.typography.titleMedium,
-      fontWeight = FontWeight.Bold,
-    )
-    OutlinedTextField(
-      value = specialInstructions,
-      onValueChange = onSpecialInstructionsChange,
-      modifier = Modifier.fillMaxWidth(),
-      placeholder = { Text("Sauce on the side, no salt…") },
-      minLines = 3,
-      maxLines = 4,
-      shape = RoundedCornerShape(16.dp),
-    )
-
-    Button(
-      onClick = onAddToOrder,
-      modifier =
-        Modifier
-          .fillMaxWidth()
-          .padding(top = 24.dp)
-          .height(54.dp),
-      shape = RoundedCornerShape(18.dp),
-    ) {
-      Text(
-        text = "Add to order  •  ${formatPrice(totalPrice)}",
-        style = MaterialTheme.typography.titleSmall,
-        fontWeight = FontWeight.Bold,
-      )
-    }
-  }
-}
-
-@Composable
-private fun CustomizerSection(
-  title: String,
-  content: @Composable () -> Unit,
-) {
-  Text(
-    text = title,
-    modifier = Modifier.padding(top = 24.dp, bottom = 10.dp),
-    style = MaterialTheme.typography.titleMedium,
-    fontWeight = FontWeight.Bold,
-  )
-  Card(
-    modifier = Modifier.fillMaxWidth(),
+        .clickable(onClick = onClick),
     shape = RoundedCornerShape(18.dp),
     colors =
       CardDefaults.cardColors(
@@ -428,8 +409,138 @@ private fun CustomizerSection(
       ),
     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
   ) {
-    Column { content() }
+    Row(
+      modifier = Modifier.padding(horizontal = 18.dp, vertical = 16.dp),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      Column(
+        modifier = Modifier.weight(1f),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+      ) {
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalAlignment = Alignment.CenterVertically,
+        ) {
+          Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+          )
+          if (selectionCount > 0) {
+            Surface(
+              color = MaterialTheme.colorScheme.primaryContainer,
+              contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+              shape = CircleShape,
+            ) {
+              Text(
+                text = selectionCount.toString(),
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+              )
+            }
+          }
+        }
+        Text(
+          text = summary,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          style = MaterialTheme.typography.bodyMedium,
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis,
+        )
+      }
+      Text(
+        text = "›",
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.headlineSmall,
+        fontWeight = FontWeight.Bold,
+      )
+    }
   }
+}
+
+@Composable
+private fun OptionPickerSheet(
+  title: String,
+  subtitle: String,
+  options: List<BurgerOption>,
+  selectedOptionIds: Collection<String>,
+  onOptionToggle: (String) -> Unit,
+  onDone: () -> Unit,
+) {
+  Column(
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .navigationBarsPadding()
+        .padding(horizontal = 20.dp)
+        .padding(bottom = 20.dp),
+  ) {
+    Text(
+      text = title,
+      style = MaterialTheme.typography.headlineSmall,
+      fontWeight = FontWeight.ExtraBold,
+    )
+    Spacer(Modifier.height(6.dp))
+    Text(
+      text = subtitle,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      style = MaterialTheme.typography.bodyMedium,
+    )
+    Spacer(Modifier.height(18.dp))
+    Card(
+      modifier = Modifier.fillMaxWidth(),
+      shape = RoundedCornerShape(18.dp),
+      colors =
+        CardDefaults.cardColors(
+          containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        ),
+      border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
+      options.forEachIndexed { index, option ->
+        CheckboxOptionRow(
+          label = option.name,
+          price =
+            if (option.additionalPrice == 0.0) {
+              "Free"
+            } else {
+              "+${formatPrice(option.additionalPrice)}"
+            },
+          checked = option.id in selectedOptionIds,
+          onClick = { onOptionToggle(option.id) },
+        )
+        if (index < options.lastIndex) {
+          HorizontalDivider(
+            modifier = Modifier.padding(start = 56.dp),
+            color = MaterialTheme.colorScheme.outlineVariant,
+          )
+        }
+      }
+    }
+    Button(
+      onClick = onDone,
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(top = 18.dp)
+          .height(52.dp),
+      shape = RoundedCornerShape(18.dp),
+    ) {
+      Text(
+        text = "Done  •  ${selectedOptionIds.size} selected",
+        fontWeight = FontWeight.Bold,
+      )
+    }
+  }
+}
+
+@Composable
+private fun SectionTitle(title: String) {
+  Text(
+    text = title,
+    style = MaterialTheme.typography.titleMedium,
+    fontWeight = FontWeight.Bold,
+  )
 }
 
 @Composable
@@ -572,10 +683,31 @@ private fun QuantityButton(
   }
 }
 
+private enum class CustomizerSheet {
+  Vegetables,
+  Extras,
+}
+
 private fun ArrayList<String>.toggled(optionId: String): ArrayList<String> =
   ArrayList(this).apply {
     if (!remove(optionId)) add(optionId)
   }
+
+private fun optionSummary(
+  options: List<BurgerOption>,
+  selectedOptionIds: Collection<String>,
+): String {
+  val selectedNames =
+    options
+      .filter { option -> option.id in selectedOptionIds }
+      .map(BurgerOption::name)
+
+  return when {
+    selectedNames.isEmpty() -> "None selected"
+    selectedNames.size <= 2 -> selectedNames.joinToString()
+    else -> "${selectedNames.take(2).joinToString()} +${selectedNames.size - 2}"
+  }
+}
 
 private fun formatPrice(price: Double): String = "$${String.format(Locale.US, "%.2f", price)}"
 
