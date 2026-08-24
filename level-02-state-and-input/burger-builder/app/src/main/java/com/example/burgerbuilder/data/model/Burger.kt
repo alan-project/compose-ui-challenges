@@ -1,5 +1,7 @@
 package com.example.burgerbuilder.data.model
 
+import kotlinx.collections.immutable.ImmutableList
+
 data class Burger(
   val id: Long,
   val name: String,
@@ -7,8 +9,8 @@ data class Burger(
   val basePrice: Double,
   val imageUrl: String,
   val doublePattyPrice: Double,
-  val vegetables: List<BurgerOption>,
-  val extras: List<BurgerOption>,
+  val vegetables: ImmutableList<BurgerOption>,
+  val extras: ImmutableList<BurgerOption>,
 )
 
 data class BurgerOption(

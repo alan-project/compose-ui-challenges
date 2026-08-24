@@ -2,6 +2,7 @@ package com.example.burgerbuilder.data.mock
 
 import com.example.burgerbuilder.data.model.Burger
 import com.example.burgerbuilder.data.model.BurgerOption
+import kotlinx.collections.immutable.persistentListOf
 
 object MockBurger {
   val item =
@@ -15,7 +16,7 @@ object MockBurger {
           "?auto=format&fit=crop&w=1200&q=85",
       doublePattyPrice = 3.00,
       vegetables =
-        listOf(
+        persistentListOf(
           BurgerOption("lettuce", "Lettuce", selectedByDefault = true),
           BurgerOption("tomato", "Tomato", selectedByDefault = true),
           BurgerOption("onion", "Red onion", selectedByDefault = true),
@@ -23,7 +24,7 @@ object MockBurger {
           BurgerOption("jalapenos", "Jalapeños"),
         ),
       extras =
-        listOf(
+        persistentListOf(
           BurgerOption("cheddar", "Extra cheddar", additionalPrice = 0.80),
           BurgerOption("bacon", "Crispy bacon", additionalPrice = 2.00),
           BurgerOption("egg", "Fried egg", additionalPrice = 1.50),
