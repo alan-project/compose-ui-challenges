@@ -62,6 +62,7 @@ dependencies {
   implementation(libs.androidx.compose.material3)
   implementation(libs.coil.compose)
   implementation(libs.coil.network.okhttp)
+  implementation(libs.kotlinx.collections.immutable)
   // Tooling
   debugImplementation(libs.androidx.compose.ui.tooling)
   // Instrumented tests
