@@ -15,24 +15,24 @@ import com.example.burgerbuilder.ui.burgerbuilder.BurgerBuilderRoute
 import com.example.burgerbuilder.ui.burgerbuilder.BurgerBuilderViewModel
 
 class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    enableEdgeToEdge()
-    setContent {
-      BurgerBuilderTheme {
-        Surface(
-          modifier = Modifier.fillMaxSize(),
-          color = MaterialTheme.colorScheme.background,
-        ) {
-          val viewModel =
-            viewModel<BurgerBuilderViewModel> {
-              BurgerBuilderViewModel(BurgerRepositoryImpl())
+        enableEdgeToEdge()
+        setContent {
+            BurgerBuilderTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background,
+                ) {
+                    val viewModel =
+                        viewModel<BurgerBuilderViewModel> {
+                            BurgerBuilderViewModel(BurgerRepositoryImpl())
+                        }
+
+                    BurgerBuilderRoute(viewModel = viewModel)
+                }
             }
-
-          BurgerBuilderRoute(viewModel = viewModel)
         }
-      }
     }
-  }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.burgerbuilder.data.repository.BurgerRepository
 
 class BurgerBuilderViewModel(
-  burgerRepository: BurgerRepository,
+    burgerRepository: BurgerRepository,
 ) : ViewModel() {
-  val burger = burgerRepository.burger
+    val burger = burgerRepository.burger
 }
