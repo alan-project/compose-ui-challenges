@@ -423,8 +423,6 @@ private fun OptionCategoryRow(
         text = summary,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         style = MaterialTheme.typography.bodyMedium,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
       )
     }
     Text(
@@ -686,11 +684,7 @@ private fun optionSummary(
       .filter { option -> option.id in selectedOptionIds }
       .map(BurgerOption::name)
 
-  return when {
-    selectedNames.isEmpty() -> "None selected"
-    selectedNames.size <= 2 -> selectedNames.joinToString()
-    else -> "${selectedNames.take(2).joinToString()} +${selectedNames.size - 2}"
-  }
+  return selectedNames.joinToString().ifEmpty { "None selected" }
 }
 
 private fun formatPrice(price: Double): String = "$${String.format(Locale.US, "%.2f", price)}"
